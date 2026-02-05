@@ -164,7 +164,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ setCurrentPage }) => {
                           value={formData.name}
                           onChange={handleChange}
                           required
-                          className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#2C5F6F] focus:border-transparent transition-all"
+                          className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-[#2C5F6F] focus:border-transparent transition-all"
                           placeholder="Your name"
                         />
                       </div>
@@ -179,7 +179,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ setCurrentPage }) => {
                           value={formData.email}
                           onChange={handleChange}
                           required
-                          className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#2C5F6F] focus:border-transparent transition-all"
+                          className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-[#2C5F6F] focus:border-transparent transition-all"
                           placeholder="your@email.com"
                         />
                       </div>
@@ -195,7 +195,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ setCurrentPage }) => {
                           name="inquiryType"
                           value={formData.inquiryType}
                           onChange={handleChange}
-                          className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#2C5F6F] focus:border-transparent transition-all"
+                          className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-900 focus:ring-2 focus:ring-[#2C5F6F] focus:border-transparent transition-all"
                         >
                           {inquiryTypes.map((type) => (
                             <option key={type.value} value={type.value}>
@@ -214,7 +214,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ setCurrentPage }) => {
                           name="subject"
                           value={formData.subject}
                           onChange={handleChange}
-                          className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#2C5F6F] focus:border-transparent transition-all"
+                          className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-[#2C5F6F] focus:border-transparent transition-all"
                           placeholder="Subject of your message"
                         />
                       </div>
@@ -231,7 +231,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ setCurrentPage }) => {
                         onChange={handleChange}
                         required
                         rows={6}
-                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#2C5F6F] focus:border-transparent transition-all resize-none"
+                        className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-[#2C5F6F] focus:border-transparent transition-all resize-none"
                         placeholder="How can we help you?"
                       />
                     </div>

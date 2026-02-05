@@ -194,7 +194,7 @@ const DonatePage: React.FC<DonatePageProps> = ({ setCurrentPage }) => {
                       value={customAmount}
                       onChange={handleCustomAmountChange}
                       placeholder="Enter amount"
-                      className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#2C5F6F] focus:border-transparent"
+                      className="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-[#2C5F6F] focus:border-transparent"
                     />
                   </div>
                 </div>
@@ -241,7 +241,7 @@ const DonatePage: React.FC<DonatePageProps> = ({ setCurrentPage }) => {
                       type="text"
                       value={donorInfo.name}
                       onChange={(e) => setDonorInfo({ ...donorInfo, name: e.target.value })}
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#2C5F6F] focus:border-transparent"
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-[#2C5F6F] focus:border-transparent"
                       placeholder="Your full name"
                       required
                     />
@@ -255,7 +255,7 @@ const DonatePage: React.FC<DonatePageProps> = ({ setCurrentPage }) => {
                       type="email"
                       value={donorInfo.email}
                       onChange={(e) => setDonorInfo({ ...donorInfo, email: e.target.value })}
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#2C5F6F] focus:border-transparent"
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-[#2C5F6F] focus:border-transparent"
                       placeholder="your@email.com"
                       required
                     />
@@ -319,18 +319,18 @@ const DonatePage: React.FC<DonatePageProps> = ({ setCurrentPage }) => {
                     <input
                       type="text"
                       placeholder="Card Number"
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#2C5F6F] focus:border-transparent"
+                      className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-[#2C5F6F] focus:border-transparent"
                     />
                     <div className="grid grid-cols-2 gap-4">
                       <input
                         type="text"
                         placeholder="MM/YY"
-                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#2C5F6F] focus:border-transparent"
+                        className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-[#2C5F6F] focus:border-transparent"
                       />
                       <input
                         type="text"
                         placeholder="CVC"
-                        className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-[#2C5F6F] focus:border-transparent"
+                        className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-[#2C5F6F] focus:border-transparent"
                       />
                     </div>
                   </div>
