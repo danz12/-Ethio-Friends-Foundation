@@ -139,8 +139,15 @@ const HomePage: React.FC<HomePageProps> = ({ setCurrentPage }) => {
     { label: 'Partner Organizations', value: counters.partners, icon: Handshake },
   ];
 
+  const partners = [
+    { name: 'Danish Refugee Council', type: 'Implementing Partner' },
+    { name: 'UNHCR Ethiopia', type: 'Technical Partner' },
+    { name: 'ARWNEY', type: 'Network Partner' },
+    { name: 'Ethiopian Government (ARRA)', type: 'Government Partner' },
+  ];
+
   return (
-      <div className="min-h-screen">
+    <div className="min-h-screen">
       {/* Hero Section */}
       <section className="relative min-h-[92vh] flex items-center overflow-hidden">
         <div
@@ -222,6 +229,45 @@ const HomePage: React.FC<HomePageProps> = ({ setCurrentPage }) => {
                     {stat.value.toLocaleString()}+
                   </div>
                   <p className="text-muted-foreground font-medium">{stat.label}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Partners Section */}
+      <section className="pb-10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="rounded-3xl bg-white/70 backdrop-blur-md border border-black/5 shadow-sm px-8 py-10">
+            <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6 mb-8">
+              <div>
+                <span className="text-secondary font-semibold text-sm uppercase tracking-wider">Our Network</span>
+                <h2 className="text-2xl md:text-3xl font-bold text-primary mt-2">
+                  Working alongside trusted partners
+                </h2>
+              </div>
+              <button
+                onClick={() => setCurrentPage('partnerships')}
+                className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 text-white font-semibold hover:bg-teal-700 transition-colors shadow-sm hover:shadow-md"
+              >
+                View Partnerships
+                <ArrowRight className="w-5 h-5 ml-2" />
+              </button>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+              {partners.map((partner) => (
+                <div
+                  key={partner.name}
+                  className="rounded-2xl bg-white/80 ring-1 ring-black/5 p-5 hover:shadow-md transition-shadow"
+                >
+                  <p className="text-primary font-semibold leading-snug">
+                    {partner.name}
+                  </p>
+                  <p className="text-sm text-muted-foreground mt-1">
+                    {partner.type}
+                  </p>
                 </div>
               ))}
             </div>
