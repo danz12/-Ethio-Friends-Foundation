@@ -241,13 +241,13 @@ const Footer: React.FC<FooterProps> = ({ setCurrentPage }) => {
             </p>
             <div className="flex items-center space-x-6">
               <button
-                onClick={() => handleNavClick('about')}
+                onClick={() => handleNavClick('privacy')}
                 className="text-white/60 hover:text-[#D4A574] text-sm transition-colors"
               >
                 Privacy Policy
               </button>
               <button
-                onClick={() => handleNavClick('about')}
+                onClick={() => handleNavClick('terms')}
                 className="text-white/60 hover:text-[#D4A574] text-sm transition-colors"
               >
                 Terms of Service

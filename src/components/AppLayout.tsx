@@ -13,6 +13,8 @@ import PartnershipsPage from './pages/PartnershipsPage';
 import ContactPage from './pages/ContactPage';
 import BeneficiariesPage from './pages/BeneficiariesPage';
 import DonatePage from './pages/DonatePage';
+import PrivacyPage from './pages/PrivacyPage';
+import TermsPage from './pages/TermsPage';
 
 const AppLayout: React.FC = () => {
   const [currentPage, setCurrentPage] = useState('home');
@@ -55,6 +57,10 @@ const AppLayout: React.FC = () => {
         return <BeneficiariesPage setCurrentPage={setCurrentPage} />;
       case 'donate':
         return <DonatePage setCurrentPage={setCurrentPage} />;
+      case 'privacy':
+        return <PrivacyPage setCurrentPage={setCurrentPage} />;
+      case 'terms':
+        return <TermsPage setCurrentPage={setCurrentPage} />;
       default:
         return <HomePage setCurrentPage={setCurrentPage} />;
     }
