@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Heart, Check, CreditCard, Calendar, Shield, Mail, User, ArrowRight, Loader2 } from 'lucide-react';
+import { Heart, Check, Calendar, Shield, Mail, User, ArrowRight, Loader2, BookOpen, Briefcase } from 'lucide-react';
 import { supabase } from '@/lib/supabase';
 
 interface DonatePageProps {
@@ -20,6 +20,29 @@ const DonatePage: React.FC<DonatePageProps> = ({ setCurrentPage }) => {
     { value: 50, label: '$50', impact: 'Food assistance for one family' },
     { value: 100, label: '$100', impact: 'Vocational training for one person' },
     { value: 500, label: '$500', impact: 'Support a community workshop' },
+  ];
+
+  const impactPillars = [
+    {
+      title: 'Education',
+      description: 'School supplies, learning materials, and youth support.',
+      icon: BookOpen,
+    },
+    {
+      title: 'Livelihoods',
+      description: 'Skills training and opportunities for self-reliance.',
+      icon: Briefcase,
+    },
+    {
+      title: 'Protection',
+      description: 'GBV prevention, safety, and legal awareness support.',
+      icon: Shield,
+    },
+    {
+      title: 'Wellbeing',
+      description: 'Psychosocial support and community-based care.',
+      icon: Heart,
+    },
   ];
 
   const getAmount = () => {
@@ -72,7 +95,7 @@ const DonatePage: React.FC<DonatePageProps> = ({ setCurrentPage }) => {
           donor_email: donorInfo.email,
           amount: getAmount(),
           frequency: frequency,
-          status: 'completed',
+          status: 'submitted',
         });
 
       if (dbError) throw dbError;
@@ -96,7 +119,7 @@ const DonatePage: React.FC<DonatePageProps> = ({ setCurrentPage }) => {
   };
 
   return (
-    <div className="min-h-screen pt-20 bg-gray-50">
+    <div className="min-h-screen pt-20">
       {/* Hero Section */}
       <section className="relative py-16 bg-gradient-to-br from-[#2C5F6F] to-[#1a3d47]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
@@ -110,6 +133,33 @@ const DonatePage: React.FC<DonatePageProps> = ({ setCurrentPage }) => {
           <p className="text-white/90 text-xl max-w-2xl mx-auto">
             Your donation empowers refugee communities through education, livelihoods, and protection programs.
           </p>
+        </div>
+      </section>
+
+      {/* How Your Donation Helps */}
+      <section className="-mt-10 pb-6">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="rounded-3xl bg-white/80 backdrop-blur-md border border-black/5 shadow-sm px-6 py-8 md:px-10">
+            <div className="text-center mb-8">
+              <h2 className="text-2xl md:text-3xl font-bold text-[#2C5F6F]">How your donation helps</h2>
+              <p className="text-gray-600 mt-2">
+                Your support strengthens refugee-led programs across core areas.
+              </p>
+            </div>
+            <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6">
+              {impactPillars.map((pillar) => (
+                <div key={pillar.title} className="flex gap-4">
+                  <div className="h-11 w-11 rounded-2xl bg-[#2C5F6F]/10 flex items-center justify-center flex-shrink-0">
+                    <pillar.icon className="h-5 w-5 text-[#2C5F6F]" />
+                  </div>
+                  <div>
+                    <p className="font-bold text-[#2C5F6F]">{pillar.title}</p>
+                    <p className="text-sm text-gray-600 leading-relaxed">{pillar.description}</p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </section>
 
@@ -136,7 +186,7 @@ const DonatePage: React.FC<DonatePageProps> = ({ setCurrentPage }) => {
             ))}
           </div>
 
-          <div className="bg-white rounded-2xl shadow-xl p-8">
+          <div className="rounded-3xl bg-white/80 backdrop-blur-md border border-black/5 shadow-sm p-8">
             {/* Step 1: Amount Selection */}
             {step === 'amount' && (
               <div>
@@ -169,10 +219,10 @@ const DonatePage: React.FC<DonatePageProps> = ({ setCurrentPage }) => {
                     <button
                       key={amount.value}
                       onClick={() => handleAmountSelect(amount.value)}
-                      className={`p-4 rounded-xl border-2 transition-all ${
+                      className={`p-4 rounded-2xl bg-white/90 ring-1 ring-black/5 hover:shadow-md transition-all ${
                         selectedAmount === amount.value && !customAmount
-                          ? 'border-[#D4A574] bg-[#D4A574]/10'
-                          : 'border-gray-200 hover:border-[#2C5F6F]'
+                          ? 'ring-2 ring-[#D4A574] shadow-md'
+                          : ''
                       }`}
                     >
                       <div className="text-2xl font-bold text-[#2C5F6F]">{amount.label}</div>
@@ -290,55 +340,29 @@ const DonatePage: React.FC<DonatePageProps> = ({ setCurrentPage }) => {
             {step === 'payment' && (
               <div>
                 <h2 className="text-2xl font-bold text-[#2C5F6F] mb-6 text-center">
-                  Complete Your Donation
+                  Review & Submit
                 </h2>
 
-                <div className="bg-[#2C5F6F]/5 rounded-lg p-4 mb-6">
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-gray-600">Donor:</span>
-                    <span className="font-medium text-[#2C5F6F]">{donorInfo.name}</span>
-                  </div>
-                  <div className="flex justify-between items-center mb-2">
-                    <span className="text-gray-600">Email:</span>
-                    <span className="font-medium text-[#2C5F6F]">{donorInfo.email}</span>
-                  </div>
-                  <div className="flex justify-between items-center pt-2 border-t border-gray-200">
-                    <span className="text-gray-600">Total:</span>
-                    <span className="text-2xl font-bold text-[#D4A574]">
-                      ${getAmount().toFixed(2)} {frequency !== 'one-time' && `/ ${frequency === 'monthly' ? 'month' : 'year'}`}
-                    </span>
-                  </div>
-                </div>
-
-                <div className="bg-gray-50 rounded-lg p-6 mb-6">
-                  <div className="flex items-center mb-4">
-                    <CreditCard className="w-5 h-5 text-[#2C5F6F] mr-2" />
-                    <span className="font-semibold text-[#2C5F6F]">Payment Information</span>
-                  </div>
-                  <div className="space-y-4">
-                    <input
-                      type="text"
-                      placeholder="Card Number"
-                      className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-[#2C5F6F] focus:border-transparent"
-                    />
-                    <div className="grid grid-cols-2 gap-4">
-                      <input
-                        type="text"
-                        placeholder="MM/YY"
-                        className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-[#2C5F6F] focus:border-transparent"
-                      />
-                      <input
-                        type="text"
-                        placeholder="CVC"
-                        className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-[#2C5F6F] focus:border-transparent"
-                      />
+                <div className="bg-[#2C5F6F]/5 rounded-2xl p-6 mb-6">
+                  <div className="grid sm:grid-cols-2 gap-4">
+                    <div>
+                      <p className="text-xs uppercase tracking-wider text-gray-500 font-semibold">Donor</p>
+                      <p className="text-[#2C5F6F] font-bold mt-1">{donorInfo.name}</p>
+                      <p className="text-gray-600 text-sm">{donorInfo.email}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs uppercase tracking-wider text-gray-500 font-semibold">Donation</p>
+                      <p className="text-[#D4A574] font-extrabold text-2xl mt-1">
+                        ${getAmount().toFixed(2)}
+                        <span className="text-sm font-semibold text-gray-500 ml-2">
+                          {frequency !== 'one-time' ? `/ ${frequency === 'monthly' ? 'month' : 'year'}` : ''}
+                        </span>
+                      </p>
+                      <p className="text-gray-600 text-sm mt-1">
+                        We’ll record your submission and keep you updated where possible.
+                      </p>
                     </div>
                   </div>
-                </div>
-
-                <div className="flex items-center text-sm text-gray-500 mb-6">
-                  <Shield className="w-4 h-4 mr-2 text-green-600" />
-                  Your payment is secured with SSL encryption
                 </div>
 
                 {error && (
@@ -363,12 +387,12 @@ const DonatePage: React.FC<DonatePageProps> = ({ setCurrentPage }) => {
                     {isProcessing ? (
                       <>
                         <Loader2 className="w-5 h-5 mr-2 animate-spin" />
-                        Processing...
+                        Submitting...
                       </>
                     ) : (
                       <>
                         <Heart className="w-5 h-5 mr-2" />
-                        Complete Donation
+                        Submit Donation
                       </>
                     )}
                   </button>
@@ -386,7 +410,11 @@ const DonatePage: React.FC<DonatePageProps> = ({ setCurrentPage }) => {
                   Thank You for Your Generosity!
                 </h2>
                 <p className="text-gray-600 mb-6 max-w-md mx-auto">
-                  Your donation of <span className="font-bold text-[#D4A574]">${getAmount().toFixed(2)}</span> will help empower refugee communities. A confirmation email has been sent to {donorInfo.email}.
+                  Your donation of <span className="font-bold text-[#D4A574]">${getAmount().toFixed(2)}</span> will help empower refugee communities. If you need donation instructions, please contact us at{' '}
+                  <a className="font-semibold text-[#2C5F6F] hover:underline" href="mailto:info@effr.org">
+                    info@effr.org
+                  </a>
+                  .
                 </p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
                   <button
@@ -416,15 +444,15 @@ const DonatePage: React.FC<DonatePageProps> = ({ setCurrentPage }) => {
             <div className="mt-8 flex flex-wrap justify-center gap-6 text-sm text-gray-500">
               <div className="flex items-center">
                 <Shield className="w-5 h-5 mr-2 text-green-600" />
-                Secure Payment
+                Secure & private
               </div>
               <div className="flex items-center">
                 <Calendar className="w-5 h-5 mr-2 text-[#2C5F6F]" />
-                Cancel Anytime
+                One-time or recurring
               </div>
               <div className="flex items-center">
                 <Heart className="w-5 h-5 mr-2 text-[#D4A574]" />
-                100% Tax Deductible
+                Impact-focused giving
               </div>
             </div>
           )}
@@ -432,21 +460,23 @@ const DonatePage: React.FC<DonatePageProps> = ({ setCurrentPage }) => {
       </section>
 
       {/* Impact Section */}
-      <section className="py-16 bg-white">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-2xl font-bold text-[#2C5F6F] mb-8">Your Impact</h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="p-6 bg-gray-50 rounded-xl">
-              <div className="text-3xl font-bold text-[#D4A574] mb-2">5,000+</div>
-              <p className="text-gray-600">Beneficiaries Reached</p>
-            </div>
-            <div className="p-6 bg-gray-50 rounded-xl">
-              <div className="text-3xl font-bold text-[#D4A574] mb-2">850+</div>
-              <p className="text-gray-600">Families Supported</p>
-            </div>
-            <div className="p-6 bg-gray-50 rounded-xl">
-              <div className="text-3xl font-bold text-[#D4A574] mb-2">120+</div>
-              <p className="text-gray-600">Workshops Conducted</p>
+      <section className="py-16">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="rounded-3xl bg-white/70 backdrop-blur-md border border-black/5 shadow-sm p-8 md:p-10 text-center">
+            <h2 className="text-2xl font-bold text-[#2C5F6F] mb-8">Your Impact</h2>
+            <div className="grid md:grid-cols-3 gap-8">
+              <div className="p-6 bg-white/80 ring-1 ring-black/5 rounded-2xl">
+                <div className="text-3xl font-bold text-[#D4A574] mb-2">5,000+</div>
+                <p className="text-gray-600">Beneficiaries Reached</p>
+              </div>
+              <div className="p-6 bg-white/80 ring-1 ring-black/5 rounded-2xl">
+                <div className="text-3xl font-bold text-[#D4A574] mb-2">850+</div>
+                <p className="text-gray-600">Families Supported</p>
+              </div>
+              <div className="p-6 bg-white/80 ring-1 ring-black/5 rounded-2xl">
+                <div className="text-3xl font-bold text-[#D4A574] mb-2">120+</div>
+                <p className="text-gray-600">Workshops Conducted</p>
+              </div>
             </div>
           </div>
         </div>
