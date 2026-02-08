@@ -1,12 +1,9 @@
 import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Facebook, Send, Heart, ExternalLink } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
+import { Mail, MapPin, Facebook, Send, Heart, ExternalLink } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { subscribeNewsletter } from '@/lib/formsClient';
 
-interface FooterProps {
-  setCurrentPage: (page: string) => void;
-}
-
-const Footer: React.FC<FooterProps> = ({ setCurrentPage }) => {
+const Footer: React.FC = () => {
   const [email, setEmail] = useState('');
   const [subscribeStatus, setSubscribeStatus] = useState<'idle' | 'loading' | 'success' | 'error'>('idle');
 
@@ -16,19 +13,8 @@ const Footer: React.FC<FooterProps> = ({ setCurrentPage }) => {
 
     setSubscribeStatus('loading');
     try {
-      const { error } = await supabase
-        .from('newsletter_subscriptions')
-        .insert({ email });
-
-      if (error) {
-        if (error.code === '23505') {
-          setSubscribeStatus('success');
-        } else {
-          throw error;
-        }
-      } else {
-        setSubscribeStatus('success');
-      }
+      await subscribeNewsletter(email);
+      setSubscribeStatus('success');
       setEmail('');
       setTimeout(() => setSubscribeStatus('idle'), 3000);
     } catch (err) {
@@ -37,36 +23,32 @@ const Footer: React.FC<FooterProps> = ({ setCurrentPage }) => {
     }
   };
 
-  const handleNavClick = (page: string) => {
-    setCurrentPage(page);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
   const quickLinks = [
-    { name: 'Home', page: 'home' },
-    { name: 'About Us', page: 'about' },
-    { name: 'Our Programs', page: 'programs' },
-    { name: 'Impact & Activities', page: 'impact' },
-    { name: 'Beneficiaries', page: 'beneficiaries' },
-    { name: 'Media & Resources', page: 'media' },
-    { name: 'Contact Us', page: 'contact' },
+    { name: 'Home', to: '/' },
+    { name: 'About Us', to: '/about' },
+    { name: 'Our Programs', to: '/programs' },
+    { name: 'Impact & Activities', to: '/impact' },
+    { name: 'Beneficiaries', to: '/beneficiaries' },
+    { name: 'Media & Resources', to: '/media' },
+    { name: 'Contact Us', to: '/contact' },
   ];
 
 
   const programs = [
-    { name: 'Economic Empowerment', page: 'program-economic-empowerment' },
-    { name: 'Livelihood Program', page: 'program-livelihood' },
-    { name: 'Protection & GBV', page: 'program-protection-gbv' },
-    { name: 'Psychosocial Support', page: 'program-mhpss' },
-    { name: 'Child & Youth', page: 'program-child-youth' },
-    { name: 'Happy Family', page: 'program-happy-family' },
+    { name: 'Economic Empowerment', to: '/programs/economic-empowerment' },
+    { name: 'Livelihood Program', to: '/programs/livelihood' },
+    { name: 'Protection & GBV', to: '/programs/protection-gbv' },
+    { name: 'Psychosocial Support', to: '/programs/mhpss' },
+    { name: 'Child & Youth', to: '/programs/child-youth' },
+    { name: 'Happy Family', to: '/programs/happy-family' },
+    { name: 'Disability Support', to: '/programs/disability-support' },
   ];
 
   const getInvolved = [
-    { name: 'Donate', page: 'contact' },
-    { name: 'Partner With Us', page: 'partnerships' },
-    { name: 'Volunteer', page: 'contact' },
-    { name: 'Legal Awareness Project', page: 'legal-awareness' },
+    { name: 'Donate', to: '/donate' },
+    { name: 'Partner With Us', to: '/partnerships' },
+    { name: 'Volunteer', to: '/contact' },
+    { name: 'Legal Awareness Project', to: '/legal-awareness' },
   ];
 
   return (
@@ -117,8 +99,14 @@ const Footer: React.FC<FooterProps> = ({ setCurrentPage }) => {
           {/* About Column */}
           <div>
             <div className="flex items-center mb-6">
-              <div className="w-12 h-12 bg-gradient-to-br from-[#D4A574] to-[#c49464] rounded-full flex items-center justify-center mr-3">
-                <span className="text-white font-bold text-lg">EF</span>
+              <div className="mr-3 flex h-12 w-12 items-center justify-center rounded-2xl bg-white/95 shadow-sm ring-1 ring-white/10">
+                <img
+                  src="https://i.postimg.cc/2qTS9DmF/effr.png"
+                  alt="EFFR logo"
+                  className="h-10 w-10 object-contain"
+                  loading="lazy"
+                  decoding="async"
+                />
               </div>
               <div>
                 <h4 className="font-bold text-lg">EFFR</h4>
@@ -130,17 +118,15 @@ const Footer: React.FC<FooterProps> = ({ setCurrentPage }) => {
             </p>
             <div className="flex space-x-3">
               <a
-                href="https://facebook.com"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="#"
+                onClick={(e) => e.preventDefault()}
                 className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-[#D4A574] transition-colors"
               >
                 <Facebook className="w-5 h-5" />
               </a>
               <a
-                href="https://t.me"
-                target="_blank"
-                rel="noopener noreferrer"
+                href="#"
+                onClick={(e) => e.preventDefault()}
                 className="w-10 h-10 bg-white/10 rounded-full flex items-center justify-center hover:bg-[#D4A574] transition-colors"
               >
                 <Send className="w-5 h-5" />
@@ -153,14 +139,14 @@ const Footer: React.FC<FooterProps> = ({ setCurrentPage }) => {
             <h4 className="font-bold text-lg mb-6 text-[#D4A574]">Quick Links</h4>
             <ul className="space-y-3">
               {quickLinks.map((link) => (
-                <li key={link.page}>
-                  <button
-                    onClick={() => handleNavClick(link.page)}
+                <li key={link.to}>
+                  <Link
+                    to={link.to}
                     className="text-white/70 hover:text-[#D4A574] transition-colors text-sm flex items-center"
                   >
                     <span className="w-1.5 h-1.5 bg-[#D4A574] rounded-full mr-2"></span>
                     {link.name}
-                  </button>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -171,14 +157,14 @@ const Footer: React.FC<FooterProps> = ({ setCurrentPage }) => {
             <h4 className="font-bold text-lg mb-6 text-[#D4A574]">Our Programs</h4>
             <ul className="space-y-3">
               {programs.map((program) => (
-                <li key={program.page}>
-                  <button
-                    onClick={() => handleNavClick(program.page)}
+                <li key={program.to}>
+                  <Link
+                    to={program.to}
                     className="text-white/70 hover:text-[#D4A574] transition-colors text-sm flex items-center"
                   >
                     <span className="w-1.5 h-1.5 bg-[#D4A574] rounded-full mr-2"></span>
                     {program.name}
-                  </button>
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -203,28 +189,19 @@ const Footer: React.FC<FooterProps> = ({ setCurrentPage }) => {
                   info@effr.org
                 </a>
               </li>
-              <li className="flex items-center">
-                <Phone className="w-5 h-5 text-[#D4A574] mr-3 flex-shrink-0" />
-                <a
-                  href="tel:+251911000000"
-                  className="text-white/70 hover:text-[#D4A574] text-sm transition-colors"
-                >
-                  +251 911 000 000
-                </a>
-              </li>
             </ul>
 
             <div className="mt-6">
               <h5 className="font-semibold text-sm mb-3">Get Involved</h5>
               <div className="flex flex-wrap gap-2">
                 {getInvolved.map((item) => (
-                  <button
+                  <Link
                     key={item.name}
-                    onClick={() => handleNavClick(item.page)}
+                    to={item.to}
                     className="px-3 py-1.5 bg-white/10 hover:bg-[#D4A574] rounded-full text-xs transition-colors"
                   >
                     {item.name}
-                  </button>
+                  </Link>
                 ))}
               </div>
             </div>
@@ -240,18 +217,12 @@ const Footer: React.FC<FooterProps> = ({ setCurrentPage }) => {
               © 2026 Ethio Friends Foundation for Refugees. All rights reserved.
             </p>
             <div className="flex items-center space-x-6">
-              <button
-                onClick={() => handleNavClick('privacy')}
-                className="text-white/60 hover:text-[#D4A574] text-sm transition-colors"
-              >
+              <Link to="/privacy" className="text-white/60 hover:text-[#D4A574] text-sm transition-colors">
                 Privacy Policy
-              </button>
-              <button
-                onClick={() => handleNavClick('terms')}
-                className="text-white/60 hover:text-[#D4A574] text-sm transition-colors"
-              >
+              </Link>
+              <Link to="/terms" className="text-white/60 hover:text-[#D4A574] text-sm transition-colors">
                 Terms of Service
-              </button>
+              </Link>
             </div>
             <p className="text-white/60 text-sm flex items-center">
               Made with <Heart className="w-4 h-4 text-[#D4A574] mx-1" /> for refugees

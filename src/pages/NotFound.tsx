@@ -1,5 +1,8 @@
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { useEffect } from "react";
+import Seo from "@/components/Seo";
+import StructuredData from "@/components/StructuredData";
+import PageHero from "@/components/PageHero";
 
 const NotFound = () => {
   const location = useLocation();
@@ -12,15 +15,35 @@ const NotFound = () => {
   }, [location.pathname]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center p-8 rounded-lg border border-border bg-card shadow-md animate-slide-in">
-        <h1 className="text-5xl font-bold mb-6 text-primary">404</h1>
-        <p className="text-xl text-card-foreground mb-6">Page not found</p>
-        <a href="/" className="text-primary hover:text-primary/80 underline transition-colors">
-          Return to Home
-        </a>
-      </div>
-    </div>
+    <article className="min-h-screen pt-20">
+      <Seo
+        title="404 - Page Not Found"
+        description="The page you are looking for could not be found."
+        noIndex
+      />
+      <StructuredData
+        breadcrumbs={[
+          { name: "Home", path: "/" },
+          { name: "404", path: location.pathname || "/404" },
+        ]}
+      />
+      <PageHero
+        imageSrc="/images/official/photo_2024-11-28_13-05-39.jpg"
+        align="center"
+        badge={{ label: "Error" }}
+        title="404"
+        description="Page not found."
+      >
+        <div className="flex justify-center">
+          <Link
+            to="/"
+            className="inline-flex items-center justify-center rounded-full bg-white/10 hover:bg-white/[0.16] border border-white/20 px-6 py-3 text-white font-semibold transition-colors"
+          >
+            Return to Home
+          </Link>
+        </div>
+      </PageHero>
+    </article>
   );
 };
 

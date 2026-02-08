@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Redirecting...</title>
+    <script>
+      (function () {
+        // GitHub Pages doesn't support SPA rewrites for deep links.
+        // This page redirects back to index.html while preserving the intended path.
+        var BASE_PATH = '/-Ethio-Friends-Foundation/';
+        var fullPath = window.location.pathname;
+        var appPath = fullPath.indexOf(BASE_PATH) === 0 ? fullPath.slice(BASE_PATH.length - 1) : fullPath;
+        var target = BASE_PATH + '?p=' + encodeURIComponent(appPath + window.location.search + window.location.hash);
+        window.location.replace(window.location.origin + target);
+      })();
+    </script>
+  </head>
+  <body></body>
+</html>
+

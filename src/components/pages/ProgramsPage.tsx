@@ -1,120 +1,140 @@
 import React from 'react';
-import { Briefcase, Users, Shield, Heart, BookOpen, Home, ArrowRight, CheckCircle } from 'lucide-react';
+import { Briefcase, Users, Shield, Heart, BookOpen, Home, ArrowRight, CheckCircle, Accessibility } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import Seo from '@/components/Seo';
+import StructuredData from '@/components/StructuredData';
+import OptimizedImage from '@/components/OptimizedImage';
+import PageHero from '@/components/PageHero';
 
-interface ProgramsPageProps {
-  setCurrentPage: (page: string) => void;
-}
-
-const ProgramsPage: React.FC<ProgramsPageProps> = ({ setCurrentPage }) => {
+const ProgramsPage: React.FC = () => {
+  const navigate = useNavigate();
   const programs = [
     {
       id: 'economic-empowerment',
       title: 'Economic Empowerment & Entrepreneurship',
-      description: 'Building sustainable livelihoods through entrepreneurship training, business development support, and access to microfinance opportunities.',
+      description: 'Supporting refugee self-reliance through entrepreneurship training and practical business support.',
       icon: Briefcase,
-      image: 'https://d64gsuwffb70l.cloudfront.net/698470e793dd34d81ce542cb_1770287503428_5f515e73.jpg',
+      image: '/images/official/photo_2024-11-28_13-05-01.jpg',
       color: 'from-emerald-500 to-teal-600',
       activities: [
-        'Business skills training workshops',
-        'Microfinance and savings groups',
-        'Market linkage support',
-        'Entrepreneurship mentorship',
+        'Entrepreneurship and business skills training',
+        'Mentorship and peer learning',
+        'Linkages to opportunities and services',
+        'Community-led capacity building',
       ],
-      beneficiaries: '500+ entrepreneurs supported',
+      focus: 'Entrepreneurship and self-reliance',
     },
     {
       id: 'livelihood',
       title: 'Livelihood Program',
-      description: 'Providing vocational skills training and employment opportunities to help refugees achieve economic independence.',
+      description: 'Supporting skills development and pathways to livelihoods for refugees and host communities.',
       icon: Users,
-      image: 'https://d64gsuwffb70l.cloudfront.net/698470e793dd34d81ce542cb_1770287503617_ce61aba2.jpg',
+      image: '/images/official/photo_2024-11-28_13-05-36.jpg',
       color: 'from-blue-500 to-indigo-600',
       activities: [
-        'Vocational training courses',
-        'Job placement assistance',
-        'Skills certification programs',
-        'Cooperative formation support',
+        'Skills training and coaching',
+        'Work-readiness and employability support',
+        'Community networks and referrals',
+        'Support for small group initiatives',
       ],
-      beneficiaries: '800+ individuals trained',
+      focus: 'Skills and livelihoods pathways',
     },
     {
       id: 'protection-gbv',
-      title: 'Protection & Gender-Based Violence (GBV)',
-      description: 'Preventing gender-based violence and providing comprehensive support services to survivors.',
+      title: 'Protection and GBV Program',
+      description: 'Raising awareness and strengthening protection services to prevent and respond to gender-based violence.',
       icon: Shield,
-      image: 'https://d64gsuwffb70l.cloudfront.net/698470e793dd34d81ce542cb_1770287505032_a263e9ad.jpg',
+      image: '/images/official/photo_2024-12-27_12-19-08.jpg',
       color: 'from-purple-500 to-pink-600',
       activities: [
-        'GBV prevention awareness campaigns',
-        'Survivor support services',
-        'Safe spaces for women and girls',
-        'Community dialogue sessions',
+        'GBV prevention awareness activities',
+        'Community dialogue and referrals',
+        'Protection-focused case support (with partners)',
+        'Safe and respectful community engagement',
       ],
-      beneficiaries: '1,200+ individuals reached',
+      focus: 'Safety, dignity, and protection',
     },
     {
       id: 'mhpss',
-      title: 'Psychosocial Support & Mental Health (MHPSS)',
-      description: 'Providing mental health services and community-based psychosocial support to help refugees heal and thrive.',
+      title: 'Psychosocial Support and Mental Health (MHPSS)',
+      description: 'Community-based psychosocial support to strengthen wellbeing and social cohesion.',
       icon: Heart,
-      image: 'https://d64gsuwffb70l.cloudfront.net/698470e793dd34d81ce542cb_1770287509277_ccf1658b.jpg',
+      image: '/images/official/photo_2026-02-07_22-29-33-new.jpg',
       color: 'from-rose-500 to-red-600',
       activities: [
-        'Individual counseling sessions',
-        'Group therapy programs',
-        'Peer support networks',
-        'Trauma healing workshops',
+        'Group support sessions',
+        'Peer support and community connections',
+        'Child-friendly psychosocial activities through play',
+        'Linkage to services with partners',
       ],
-      beneficiaries: '600+ individuals supported',
+      focus: 'Wellbeing and social cohesion',
     },
     {
       id: 'child-youth',
       title: 'Child & Youth Program',
-      description: 'Supporting the education and development of refugee children and youth through comprehensive programs.',
+      description: 'Supporting refugee children and youth through education and community-based initiatives.',
       icon: BookOpen,
-      image: 'https://d64gsuwffb70l.cloudfront.net/698470e793dd34d81ce542cb_1770287505751_03bf4158.jpg',
+      image: '/images/official/photo_2024-11-28_13-05-40.jpg',
       color: 'from-amber-500 to-orange-600',
       activities: [
-        'Education material distribution',
-        'After-school tutoring programs',
-        'Youth leadership development',
-        'Recreational activities',
+        'Back-to-school support and supplies',
+        'Language support and learning assistance',
+        'Parent and community engagement for retention',
+        'Youth activities and mentorship',
       ],
-      beneficiaries: '1,500+ children and youth',
+      focus: 'Education and youth development',
     },
     {
       id: 'happy-family',
       title: 'Happy Family Program',
-      description: 'Strengthening family bonds and promoting healthy family dynamics through education and support.',
+      description: 'Strengthening families through awareness, wellbeing support, and community connections.',
       icon: Home,
-      image: 'https://d64gsuwffb70l.cloudfront.net/698470e793dd34d81ce542cb_1770287506336_e4309f12.jpg',
+      image: '/images/official/photo_2024-11-28_13-05-42.jpg',
       color: 'from-cyan-500 to-blue-600',
       activities: [
-        'Parenting skills workshops',
-        'Family counseling services',
-        'Conflict resolution training',
-        'Family bonding activities',
+        'Family awareness and support sessions',
+        'Positive parenting and communication',
+        'Community dialogue and referrals',
+        'Wellbeing activities for families',
       ],
-      beneficiaries: '400+ families supported',
+      focus: 'Family wellbeing and resilience',
+    },
+    {
+      id: 'disability-support',
+      title: 'Disability Support Program',
+      description: 'Promoting inclusion and access to support for persons with disabilities within refugee and host communities.',
+      icon: Accessibility,
+      image: '/images/official/photo_2026-02-07_21-33-53.jpg',
+      color: 'from-teal-500 to-emerald-600',
+      activities: [
+        'Inclusion and accessibility awareness',
+        'Linkage to services and referrals (with partners)',
+        'Community-led support and peer networks',
+        'Advocacy for equitable access',
+      ],
+      focus: 'Inclusion and accessibility',
     },
   ];
 
   return (
-    <div className="min-h-screen pt-20">
+    <article className="min-h-screen pt-20">
+      <Seo
+        title="Programs"
+        description="Explore EFFR programs including economic empowerment, livelihoods, protection and GBV, psychosocial support (MHPSS), child and youth support, family wellbeing, and disability inclusion."
+      />
+      <StructuredData
+        breadcrumbs={[
+          { name: 'Home', path: '/' },
+          { name: 'Programs', path: '/programs' },
+        ]}
+      />
       {/* Hero Section */}
-      <section className="relative py-20 bg-gradient-to-br from-[#2C5F6F] to-[#1a3d47]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl">
-            <span className="text-[#D4A574] font-semibold text-sm uppercase tracking-wider">What We Do</span>
-            <h1 className="text-4xl md:text-5xl font-bold text-white mt-2 mb-6">
-              Our Programs
-            </h1>
-            <p className="text-white/90 text-xl leading-relaxed">
-              Comprehensive programs designed to empower refugees and build sustainable, self-reliant communities.
-            </p>
-          </div>
-        </div>
-      </section>
+      <PageHero
+        imageSrc="/images/official/photo_2024-11-28_13-05-39.jpg"
+        badge={{ label: 'What We Do' }}
+        title="Our Programs"
+        description="Comprehensive programs designed to empower refugees and build sustainable, self-reliant communities."
+      />
 
       {/* Programs Overview */}
       <section className="py-20 bg-white">
@@ -137,16 +157,18 @@ const ProgramsPage: React.FC<ProgramsPageProps> = ({ setCurrentPage }) => {
                 }`}
               >
                 <div className={idx % 2 === 1 ? 'lg:order-2' : ''}>
-                  <div className="relative">
-                    <img
+                    <div className="relative">
+                    <OptimizedImage
                       src={program.image}
                       alt={program.title}
-                      className="rounded-2xl shadow-2xl w-full"
+                      className="w-full aspect-[4/3] object-cover rounded-2xl shadow-2xl"
+                      loading="lazy"
+                      sizes="(max-width: 1024px) 100vw, 50vw"
                     />
-                    <div className={`absolute -bottom-4 ${idx % 2 === 1 ? '-left-4' : '-right-4'} bg-gradient-to-r ${program.color} text-white p-4 rounded-xl shadow-xl`}>
-                      <program.icon className="w-8 h-8" />
+                      <div className={`absolute -bottom-4 ${idx % 2 === 1 ? '-left-4' : '-right-4'} bg-gradient-to-r ${program.color} text-white p-4 rounded-xl shadow-xl`}>
+                        <program.icon className="w-8 h-8" />
+                      </div>
                     </div>
-                  </div>
                 </div>
                 <div className={idx % 2 === 1 ? 'lg:order-1' : ''}>
                   <h3 className="text-2xl md:text-3xl font-bold text-[#2C5F6F] mb-4">
@@ -167,9 +189,9 @@ const ProgramsPage: React.FC<ProgramsPageProps> = ({ setCurrentPage }) => {
                     </ul>
                   </div>
                   <div className="flex items-center justify-between">
-                    <span className="text-[#D4A574] font-semibold">{program.beneficiaries}</span>
+                    <span className="text-[#D4A574] font-semibold">{program.focus}</span>
                     <button
-                      onClick={() => setCurrentPage(`program-${program.id}`)}
+                      onClick={() => navigate(`/programs/${program.id}`)}
                       className="inline-flex items-center text-[#2C5F6F] font-semibold hover:text-[#D4A574] transition-colors group"
                     >
                       Learn More
@@ -195,14 +217,14 @@ const ProgramsPage: React.FC<ProgramsPageProps> = ({ setCurrentPage }) => {
             {programs.map((program) => (
               <div
                 key={program.id}
-                onClick={() => setCurrentPage(`program-${program.id}`)}
+                onClick={() => navigate(`/programs/${program.id}`)}
                 className="bg-white rounded-xl p-6 shadow-md hover:shadow-xl transition-shadow cursor-pointer text-center group"
               >
                 <div className={`w-14 h-14 bg-gradient-to-r ${program.color} rounded-xl flex items-center justify-center mx-auto mb-4 group-hover:scale-110 transition-transform`}>
                   <program.icon className="w-7 h-7 text-white" />
                 </div>
                 <h3 className="font-semibold text-[#2C5F6F] text-sm mb-1">{program.title.split(' ').slice(0, 2).join(' ')}</h3>
-                <p className="text-[#D4A574] text-xs font-medium">{program.beneficiaries.split(' ')[0]}</p>
+                <p className="text-[#D4A574] text-xs font-medium">{program.focus}</p>
               </div>
             ))}
           </div>
@@ -218,23 +240,23 @@ const ProgramsPage: React.FC<ProgramsPageProps> = ({ setCurrentPage }) => {
           <p className="text-white/90 text-lg mb-8">
             Your contribution helps us expand our reach and deepen our impact.
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <button
-              onClick={() => setCurrentPage('contact')}
-              className="px-8 py-4 bg-[#D4A574] text-white rounded-full font-semibold hover:shadow-xl transition-all"
-            >
-              Donate Now
-            </button>
-            <button
-              onClick={() => setCurrentPage('partnerships')}
-              className="px-8 py-4 bg-transparent border-2 border-white text-white rounded-full font-semibold hover:bg-white/10 transition-all"
-            >
-              Partner With Us
-            </button>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <button
+              onClick={() => navigate('/donate')}
+                className="px-8 py-4 bg-[#D4A574] text-white rounded-full font-semibold hover:shadow-xl transition-all"
+              >
+                Donate Now
+              </button>
+              <button
+              onClick={() => navigate('/partnerships')}
+                className="px-8 py-4 bg-transparent border-2 border-white text-white rounded-full font-semibold hover:bg-white/10 transition-all"
+              >
+                Partner With Us
+              </button>
           </div>
         </div>
       </section>
-    </div>
+    </article>
   );
 };
 

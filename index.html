@@ -3,25 +3,42 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script>
+      (function () {
+        // Support GitHub Pages deep links via public/404.html redirect (?p=/path).
+        var params = new URLSearchParams(window.location.search);
+        var p = params.get('p');
+        if (!p) return;
+
+        try {
+          var decoded = decodeURIComponent(p);
+          var basePath = window.location.pathname.replace(/\/$/, '');
+          window.history.replaceState(null, '', basePath + decoded);
+        } catch (e) {
+          // If decoding fails, fall back to the current URL.
+        }
+      })();
+    </script>
     <title>EFFR - Ethio Friends Foundation for Refugees</title>
     <meta name="description" content="Ethiopia's first Refugee-Led Organization empowering refugees through advocacy, protection, livelihoods, and education." />
     <meta name="keywords" content="refugees, Ethiopia, humanitarian, RLO, refugee-led organization, empowerment" />
     <meta name="theme-color" content="#2C5F6F" />
 
-    <link rel="canonical" href="https://danz12.github.io/-Ethio-Friends-Foundation/" />
+    <link rel="canonical" href="%VITE_SITE_URL%" />
     <link rel="icon" type="image/svg+xml" href="%BASE_URL%favicon.svg" />
 
     <meta property="og:title" content="EFFR - Ethio Friends Foundation for Refugees" />
     <meta property="og:description" content="Ethiopia's first Refugee-Led Organization empowering refugees through advocacy, protection, livelihoods, and education." />
     <meta property="og:type" content="website" />
-    <meta property="og:url" content="https://danz12.github.io/-Ethio-Friends-Foundation/" />
-    <meta property="og:image" content="https://d64gsuwffb70l.cloudfront.net/698470e793dd34d81ce542cb_1770287487818_f29a9c0a.jpg" />
+    <meta property="og:url" content="%VITE_SITE_URL%" />
+    <meta property="og:image" content="%VITE_SITE_URL%images/official/photo_2024-11-28_13-05-39.jpg" />
     <meta property="og:image:alt" content="EFFR - Empowering Refugees, Building Futures" />
 
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="EFFR - Ethio Friends Foundation for Refugees" />
     <meta name="twitter:description" content="Ethiopia's first Refugee-Led Organization empowering refugees through advocacy, protection, livelihoods, and education." />
-    <meta name="twitter:image" content="https://d64gsuwffb70l.cloudfront.net/698470e793dd34d81ce542cb_1770287487818_f29a9c0a.jpg" />
+    <meta name="twitter:image" content="%VITE_SITE_URL%images/official/photo_2024-11-28_13-05-39.jpg" />
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700;800&display=swap" rel="stylesheet">

@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
-import { Mail, Phone, MapPin, Send, Facebook, Clock, CheckCircle, AlertCircle } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
+import { AlertCircle, CheckCircle, Facebook, Loader2, Mail, MapPin, Send } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import Seo from '@/components/Seo';
+import StructuredData from '@/components/StructuredData';
+import PageHero from '@/components/PageHero';
+import { submitContact } from '@/lib/formsClient';
 
-interface ContactPageProps {
-  setCurrentPage: (page: string) => void;
-}
-
-const ContactPage: React.FC<ContactPageProps> = ({ setCurrentPage }) => {
+const ContactPage: React.FC = () => {
+  const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -30,17 +31,13 @@ const ContactPage: React.FC<ContactPageProps> = ({ setCurrentPage }) => {
     setErrorMessage('');
 
     try {
-      const { error } = await supabase
-        .from('contact_submissions')
-        .insert({
-          name: formData.name,
-          email: formData.email,
-          subject: formData.subject,
-          inquiry_type: formData.inquiryType,
-          message: formData.message,
-        });
-
-      if (error) throw error;
+      await submitContact({
+        name: formData.name,
+        email: formData.email,
+        subject: formData.subject,
+        inquiry_type: formData.inquiryType,
+        message: formData.message,
+      });
 
       setSubmitStatus('success');
       setFormData({
@@ -69,30 +66,20 @@ const ContactPage: React.FC<ContactPageProps> = ({ setCurrentPage }) => {
   const contactInfo = [
     {
       icon: MapPin,
-      title: 'Address',
-      details: ['Addis Ababa, Ethiopia', 'Bole Sub-City'],
+      title: 'Location',
+      details: ['Addis Ababa, Ethiopia'],
     },
     {
       icon: Mail,
       title: 'Email',
-      details: ['info@effr.org', 'partnerships@effr.org'],
-    },
-    {
-      icon: Phone,
-      title: 'Phone',
-      details: ['+251 911 000 000', '+251 911 111 111'],
-    },
-    {
-      icon: Clock,
-      title: 'Office Hours',
-      details: ['Monday - Friday', '9:00 AM - 5:00 PM (EAT)'],
+      details: ['info@effr.org'],
     },
   ];
 
   const faqs = [
     {
       question: 'How can I donate to EFFR?',
-      answer: 'You can donate through our contact form by selecting "Donation" as the inquiry type, or reach out to us directly via email for bank transfer details.',
+      answer: 'You can use the Donate page to submit a donation pledge, or contact us for partnership or donation coordination.',
     },
     {
       question: 'Can I volunteer with EFFR?',
@@ -100,30 +87,35 @@ const ContactPage: React.FC<ContactPageProps> = ({ setCurrentPage }) => {
     },
     {
       question: 'How can my organization partner with EFFR?',
-      answer: 'We welcome partnerships with organizations that share our mission. Contact us through the form or email partnerships@effr.org to discuss collaboration opportunities.',
+      answer: 'We welcome partnerships with organizations that share our mission. Contact us through the form and we will follow up to discuss collaboration opportunities.',
     },
     {
       question: 'Where does EFFR operate?',
-      answer: 'EFFR operates primarily in Addis Ababa and various refugee camps across Ethiopia, including Dire Dawa, Jijiga, and Gambella regions.',
+      answer: 'EFFR operates primarily in Addis Ababa and supports activities in refugee-hosting areas referenced in our project summaries (including Gambella camps).',
     },
   ];
 
   return (
-    <div className="min-h-screen pt-20">
+    <article className="min-h-screen pt-20">
+      <Seo
+        title="Contact"
+        description="Contact EFFR for donations, partnerships, volunteering opportunities, or general inquiries. We’d love to hear from you."
+      />
+      <StructuredData
+        breadcrumbs={[
+          { name: 'Home', path: '/' },
+          { name: 'Contact', path: '/contact' },
+        ]}
+        faqs={faqs}
+        faqPagePath="/contact"
+      />
       {/* Hero Section */}
-      <section className="relative py-20 bg-gradient-to-br from-[#2C5F6F] to-[#1a3d47]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl">
-            <span className="text-[#D4A574] font-semibold text-sm uppercase tracking-wider">Get in Touch</span>
-            <h1 className="text-4xl md:text-5xl font-bold text-white mt-2 mb-6">
-              Contact Us
-            </h1>
-            <p className="text-white/90 text-xl leading-relaxed">
-              We'd love to hear from you. Whether you want to donate, partner, volunteer, or learn more about our work, reach out to us.
-            </p>
-          </div>
-        </div>
-      </section>
+      <PageHero
+        imageSrc="/images/official/photo_2024-11-28_13-05-23.jpg"
+        badge={{ label: 'Get in Touch' }}
+        title="Contact Us"
+        description="We'd love to hear from you. Whether you want to donate, partner, volunteer, or learn more about our work, reach out to us."
+      />
 
       {/* Contact Form & Info */}
       <section className="py-20 bg-white">
@@ -152,6 +144,9 @@ const ContactPage: React.FC<ContactPageProps> = ({ setCurrentPage }) => {
                   </div>
                 ) : (
                   <form onSubmit={handleSubmit} className="space-y-6">
+                    <p className="rounded-xl bg-white p-4 text-sm text-gray-600 ring-1 ring-black/5">
+                      Use this form for donations, partnerships, volunteering, or general questions. Fields marked with * are required.
+                    </p>
                     <div className="grid md:grid-cols-2 gap-6">
                       <div>
                         <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-2">
@@ -164,6 +159,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ setCurrentPage }) => {
                           value={formData.name}
                           onChange={handleChange}
                           required
+                          autoComplete="name"
                           className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-[#2C5F6F] focus:border-transparent transition-all"
                           placeholder="Your name"
                         />
@@ -179,6 +175,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ setCurrentPage }) => {
                           value={formData.email}
                           onChange={handleChange}
                           required
+                          autoComplete="email"
                           className="w-full px-4 py-3 rounded-lg border border-gray-300 bg-white text-gray-900 placeholder:text-gray-400 focus:ring-2 focus:ring-[#2C5F6F] focus:border-transparent transition-all"
                           placeholder="your@email.com"
                         />
@@ -249,7 +246,10 @@ const ContactPage: React.FC<ContactPageProps> = ({ setCurrentPage }) => {
                       className="w-full py-4 bg-gradient-to-r from-[#D4A574] to-[#c49464] text-white rounded-lg font-semibold hover:shadow-xl transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
                     >
                       {submitStatus === 'loading' ? (
-                        <span className="animate-pulse">Sending...</span>
+                        <>
+                          <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                          Sending...
+                        </>
                       ) : (
                         <>
                           <Send className="w-5 h-5 mr-2" />
@@ -283,19 +283,18 @@ const ContactPage: React.FC<ContactPageProps> = ({ setCurrentPage }) => {
               {/* Social Links */}
               <div className="bg-[#2C5F6F] rounded-xl p-6 text-white">
                 <h3 className="font-bold mb-4">Follow Us</h3>
+                <p className="text-white/70 text-sm mb-4">Add your official social links when available.</p>
                 <div className="flex space-x-3">
                   <a
-                    href="https://facebook.com"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href="#"
+                    onClick={(e) => e.preventDefault()}
                     className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center hover:bg-[#D4A574] transition-colors"
                   >
                     <Facebook className="w-5 h-5" />
                   </a>
                   <a
-                    href="https://t.me"
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href="#"
+                    onClick={(e) => e.preventDefault()}
                     className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center hover:bg-[#D4A574] transition-colors"
                   >
                     <Send className="w-5 h-5" />
@@ -314,7 +313,6 @@ const ContactPage: React.FC<ContactPageProps> = ({ setCurrentPage }) => {
             <div className="text-center">
               <MapPin className="w-12 h-12 text-[#2C5F6F] mx-auto mb-4" />
               <p className="text-[#2C5F6F] font-medium">Addis Ababa, Ethiopia</p>
-              <p className="text-gray-600 text-sm">Bole Sub-City</p>
             </div>
           </div>
         </div>
@@ -352,13 +350,13 @@ const ContactPage: React.FC<ContactPageProps> = ({ setCurrentPage }) => {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
-              onClick={() => setCurrentPage('partnerships')}
+              onClick={() => navigate('/partnerships')}
               className="px-8 py-4 bg-white text-[#2C5F6F] rounded-full font-semibold hover:shadow-xl transition-all"
             >
               Partner With Us
             </button>
             <button
-              onClick={() => setCurrentPage('programs')}
+              onClick={() => navigate('/programs')}
               className="px-8 py-4 bg-transparent border-2 border-white text-white rounded-full font-semibold hover:bg-white/10 transition-all"
             >
               Explore Programs
@@ -366,7 +364,7 @@ const ContactPage: React.FC<ContactPageProps> = ({ setCurrentPage }) => {
           </div>
         </div>
       </section>
-    </div>
+    </article>
   );
 };
 

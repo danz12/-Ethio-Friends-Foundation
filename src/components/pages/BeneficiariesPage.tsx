@@ -1,268 +1,176 @@
 import React from 'react';
-import { Users, AlertTriangle, CheckCircle, Target, Globe, Heart, BookOpen, Briefcase, Shield, ArrowRight } from 'lucide-react';
+import { Accessibility, ArrowRight, BookOpen, Globe, Heart, Shield, Users } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import Seo from '@/components/Seo';
+import StructuredData from '@/components/StructuredData';
+import PageHero from '@/components/PageHero';
+import { EFFR_PROFILE } from '@/lib/effrProfile';
 
-interface BeneficiariesPageProps {
-  setCurrentPage: (page: string) => void;
-}
+const BeneficiariesPage: React.FC = () => {
+  const navigate = useNavigate();
 
-const BeneficiariesPage: React.FC<BeneficiariesPageProps> = ({ setCurrentPage }) => {
-  const directBeneficiaries = [
+  const beneficiaryGroups = [
     {
-      group: 'Refugee Women',
-      description: 'Women from various nationalities receiving economic empowerment, GBV protection, and psychosocial support.',
-      count: '2,000+',
-      icon: Users,
+      title: 'Refugees from different nationalities and religions',
+      description:
+        'EFFR serves refugees from diverse backgrounds through community-led programs and advocacy.',
+      icon: Globe,
     },
     {
-      group: 'Refugee Children & Youth',
-      description: 'Children and young people accessing education support, recreational activities, and leadership programs.',
-      count: '1,500+',
+      title: 'Women and girls',
+      description:
+        'Programs support protection, GBV prevention, wellbeing, and economic empowerment for women and girls.',
+      icon: Shield,
+    },
+    {
+      title: 'Children and youth',
+      description:
+        'Education support, language learning, psychosocial activities, and youth-focused community initiatives.',
       icon: BookOpen,
     },
     {
-      group: 'Refugee Families',
-      description: 'Families receiving comprehensive support including food assistance, counseling, and family strengthening programs.',
-      count: '850+',
+      title: 'Families',
+      description:
+        'Family-focused wellbeing support and relief assistance for vulnerable households, supported by community networks.',
       icon: Heart,
     },
     {
-      group: 'Refugee Entrepreneurs',
-      description: 'Individuals receiving business training, microfinance support, and market linkage assistance.',
-      count: '500+',
-      icon: Briefcase,
+      title: 'Persons with disabilities',
+      description:
+        'Inclusion and access to support through awareness, referrals, and community-led peer support networks.',
+      icon: Accessibility,
     },
-  ];
-
-  const indirectBeneficiaries = [
-    'Host community members participating in social cohesion activities',
-    'Employers gaining awareness of refugee employment rights',
-    'Local businesses benefiting from refugee economic activities',
-    'Government officials engaged in policy discussions',
-    'Other RLOs learning from EFFR\'s model and experience',
-  ];
-
-  const nationalities = [
-    { name: 'Eritrea', percentage: 45 },
-    { name: 'South Sudan', percentage: 25 },
-    { name: 'Somalia', percentage: 15 },
-    { name: 'Yemen', percentage: 8 },
-    { name: 'Other', percentage: 7 },
+    {
+      title: 'Host communities',
+      description:
+        'EFFR works to strengthen social inclusion and cohesion with host community members through joint activities.',
+      icon: Users,
+    },
   ];
 
   const challenges = [
     {
-      title: 'Limited Funding',
-      description: 'Insufficient and unpredictable funding limits our ability to scale programs and reach more beneficiaries.',
-      solution: 'Diversifying funding sources and building long-term partnerships with donors.',
-      icon: AlertTriangle,
+      title: 'Language and information barriers',
+      description:
+        'Refugees may face challenges accessing information due to language differences and limited resources.',
     },
     {
-      title: 'Language Barriers',
-      description: 'Refugees speak multiple languages, making communication and material development challenging.',
-      solution: 'Developing multilingual materials and training community interpreters.',
-      icon: Globe,
+      title: 'Protection risks',
+      description:
+        'Vulnerable groups may face heightened protection risks, including gender-based violence and exploitation.',
     },
     {
-      title: 'Resource Constraints',
-      description: 'Limited office space, equipment, and human resources affect program delivery.',
-      solution: 'Seeking in-kind donations and volunteer support to supplement resources.',
-      icon: Target,
+      title: 'Education disruptions',
+      description:
+        'Displacement can interrupt schooling and create barriers to enrollment, retention, and learning support.',
     },
     {
-      title: 'Access to Remote Areas',
-      description: 'Reaching refugees in remote camps and settlements presents logistical challenges.',
-      solution: 'Training community-based facilitators and using mobile outreach approaches.',
-      icon: Shield,
+      title: 'Access and inclusion',
+      description:
+        'Persons with disabilities may face additional barriers to services, mobility, and participation.',
     },
   ];
 
   return (
-    <div className="min-h-screen pt-20">
-      {/* Hero Section */}
-      <section className="relative py-20 bg-gradient-to-br from-[#2C5F6F] to-[#1a3d47]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl">
-            <span className="text-[#D4A574] font-semibold text-sm uppercase tracking-wider">Who We Serve</span>
-            <h1 className="text-4xl md:text-5xl font-bold text-white mt-2 mb-6">
-              Beneficiaries & Challenges
-            </h1>
-            <p className="text-white/90 text-xl leading-relaxed">
-              Understanding who we serve and the challenges we face in delivering impactful programs.
-            </p>
-          </div>
-        </div>
-      </section>
+    <article className="min-h-screen pt-20">
+      <Seo
+        title="Beneficiaries"
+        description="Learn who EFFR serves — refugees from different nationalities and religions, women, children, youth, families, persons with disabilities, and host communities."
+      />
+      <StructuredData
+        breadcrumbs={[
+          { name: 'Home', path: '/' },
+          { name: 'Beneficiaries', path: '/beneficiaries' },
+        ]}
+      />
 
-      {/* Direct Beneficiaries */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <span className="text-[#D4A574] font-semibold text-sm uppercase tracking-wider">Direct Impact</span>
-            <h2 className="text-3xl md:text-4xl font-bold text-[#2C5F6F] mt-2 mb-4">
-              Direct Beneficiaries
-            </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto text-lg">
-              The individuals and groups who directly benefit from our programs and services.
-            </p>
-          </div>
+      <PageHero
+        imageSrc="/images/official/photo_2024-11-28_13-05-40.jpg"
+        badge={{ label: 'Who We Serve' }}
+        title="Beneficiaries"
+        description="EFFR supports refugees and host communities through programs that promote inclusion, protection, wellbeing, and self-reliance."
+      />
 
-          <div className="grid md:grid-cols-2 gap-8">
-            {directBeneficiaries.map((group, idx) => (
-              <div
-                key={idx}
-                className="bg-gray-50 rounded-2xl p-8 hover:shadow-lg transition-shadow"
-              >
-                <div className="flex items-start">
-                  <div className="w-16 h-16 bg-[#2C5F6F] rounded-xl flex items-center justify-center mr-6 flex-shrink-0">
-                    <group.icon className="w-8 h-8 text-white" />
+      {/* Beneficiary groups */}
+      <section className="-mt-10 pb-6">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="rounded-3xl bg-white/80 backdrop-blur-md border border-black/5 shadow-sm p-8 md:p-10">
+            <div className="text-center mb-10">
+              <h2 className="text-2xl md:text-3xl font-bold text-primary">Direct Beneficiaries</h2>
+              <p className="mt-2 text-muted-foreground">
+                EFFR’s mission is to empower refugees from different nationalities and religions and facilitate social
+                inclusion into the local community.
+              </p>
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {beneficiaryGroups.map((group) => (
+                <div key={group.title} className="bg-gray-50 rounded-2xl p-7 hover:shadow-lg transition-shadow">
+                  <div className="w-12 h-12 bg-primary rounded-xl flex items-center justify-center mb-5">
+                    <group.icon className="w-6 h-6 text-white" />
                   </div>
-                  <div>
-                    <div className="flex items-center mb-2">
-                      <h3 className="text-xl font-bold text-[#2C5F6F]">{group.group}</h3>
-                      <span className="ml-3 px-3 py-1 bg-[#D4A574]/20 text-[#D4A574] rounded-full text-sm font-semibold">
-                        {group.count}
-                      </span>
-                    </div>
-                    <p className="text-gray-600">{group.description}</p>
-                  </div>
+                  <h3 className="text-xl font-bold text-primary mb-2">{group.title}</h3>
+                  <p className="text-muted-foreground leading-relaxed">{group.description}</p>
                 </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Nationalities Served */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div>
-              <span className="text-[#D4A574] font-semibold text-sm uppercase tracking-wider">Diversity</span>
-              <h2 className="text-3xl font-bold text-[#2C5F6F] mt-2 mb-6">
-                Nationalities We Serve
-              </h2>
-              <p className="text-gray-600 text-lg leading-relaxed mb-8">
-                EFFR serves refugees from diverse nationalities and backgrounds, each with unique needs and experiences. Our programs are designed to be inclusive and culturally sensitive.
-              </p>
-              <div className="space-y-4">
-                {nationalities.map((nat, idx) => (
-                  <div key={idx}>
-                    <div className="flex justify-between mb-1">
-                      <span className="font-medium text-[#2C5F6F]">{nat.name}</span>
-                      <span className="text-gray-600">{nat.percentage}%</span>
-                    </div>
-                    <div className="w-full bg-gray-200 rounded-full h-3">
-                      <div
-                        className="bg-gradient-to-r from-[#2C5F6F] to-[#D4A574] h-3 rounded-full transition-all duration-500"
-                        style={{ width: `${nat.percentage}%` }}
-                      ></div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="relative">
-              <img
-                src="https://d64gsuwffb70l.cloudfront.net/698470e793dd34d81ce542cb_1770287487818_f29a9c0a.jpg"
-                alt="Diverse Community"
-                className="rounded-2xl shadow-2xl"
-              />
+              ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* Indirect Beneficiaries */}
+      {/* Program areas */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid lg:grid-cols-2 gap-12 items-center">
-            <div className="order-2 lg:order-1">
-              <img
-                src="https://d64gsuwffb70l.cloudfront.net/698470e793dd34d81ce542cb_1770287556330_3745f45d.jpg"
-                alt="Community Impact"
-                className="rounded-2xl shadow-2xl"
-              />
+          <div className="rounded-3xl bg-gray-50 border border-black/5 shadow-sm p-8 md:p-12">
+            <div className="flex flex-col md:flex-row md:items-end md:justify-between gap-6 mb-10">
+              <div>
+                <span className="text-secondary font-semibold text-sm uppercase tracking-wider">Programs</span>
+                <h2 className="text-3xl md:text-4xl font-bold text-primary mt-2">How We Support</h2>
+                <p className="text-muted-foreground mt-2 max-w-2xl">
+                  EFFR works across several program areas including protection, livelihoods, psychosocial wellbeing,
+                  education, and inclusion.
+                </p>
+              </div>
+              <button
+                type="button"
+                onClick={() => navigate('/programs')}
+                className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 text-white font-semibold hover:bg-teal-700 transition-colors shadow-sm"
+              >
+                Explore programs
+                <ArrowRight className="w-5 h-5 ml-2" />
+              </button>
             </div>
-            <div className="order-1 lg:order-2">
-              <span className="text-[#D4A574] font-semibold text-sm uppercase tracking-wider">Wider Impact</span>
-              <h2 className="text-3xl font-bold text-[#2C5F6F] mt-2 mb-6">
-                Indirect Beneficiaries
-              </h2>
-              <p className="text-gray-600 text-lg leading-relaxed mb-6">
-                Our work creates ripple effects that benefit the broader community beyond our direct program participants.
-              </p>
-              <ul className="space-y-3">
-                {indirectBeneficiaries.map((item, idx) => (
-                  <li key={idx} className="flex items-start">
-                    <CheckCircle className="w-5 h-5 text-[#D4A574] mr-3 mt-0.5 flex-shrink-0" />
-                    <span className="text-gray-600">{item}</span>
-                  </li>
-                ))}
-              </ul>
+
+            <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {EFFR_PROFILE.programs.map((program) => (
+                <div key={program.id} className="rounded-2xl bg-white/90 ring-1 ring-black/5 p-5">
+                  <p className="font-semibold text-primary">{program.title}</p>
+                  <p className="mt-1 text-sm text-muted-foreground">Learn more on the program detail page.</p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
       </section>
 
-      {/* Challenges & Solutions */}
+      {/* Challenges */}
       <section className="py-20 bg-gradient-to-br from-[#2C5F6F] to-[#1a3d47]">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <span className="text-[#D4A574] font-semibold text-sm uppercase tracking-wider">Transparency</span>
-            <h2 className="text-3xl md:text-4xl font-bold text-white mt-2 mb-4">
-              Challenges We Face
-            </h2>
+            <span className="text-secondary font-semibold text-sm uppercase tracking-wider">Context</span>
+            <h2 className="text-3xl md:text-4xl font-bold text-white mt-2 mb-4">Challenges We Work On</h2>
             <p className="text-white/80 max-w-2xl mx-auto text-lg">
-              We believe in transparency about the challenges we face and the solutions we're implementing.
+              Common challenges that affect refugees and host communities and inform our program design.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-8">
-            {challenges.map((challenge, idx) => (
-              <div
-                key={idx}
-                className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20"
-              >
-                <div className="w-14 h-14 bg-[#D4A574] rounded-xl flex items-center justify-center mb-4">
-                  <challenge.icon className="w-7 h-7 text-white" />
-                </div>
+          <div className="grid md:grid-cols-2 gap-6">
+            {challenges.map((challenge) => (
+              <div key={challenge.title} className="bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20">
                 <h3 className="text-xl font-bold text-white mb-3">{challenge.title}</h3>
-                <p className="text-white/80 mb-4">{challenge.description}</p>
-                <div className="pt-4 border-t border-white/20">
-                  <h4 className="text-[#D4A574] font-semibold text-sm mb-2">Our Solution:</h4>
-                  <p className="text-white/70 text-sm">{challenge.solution}</p>
-                </div>
+                <p className="text-white/80">{challenge.description}</p>
               </div>
             ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Impact Numbers */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-12">
-            <h2 className="text-3xl font-bold text-[#2C5F6F] mb-4">
-              Total Impact at a Glance
-            </h2>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-            <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-[#2C5F6F] mb-2">5,000+</div>
-              <p className="text-gray-600">Total Beneficiaries</p>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-[#2C5F6F] mb-2">5+</div>
-              <p className="text-gray-600">Nationalities Served</p>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-[#2C5F6F] mb-2">6</div>
-              <p className="text-gray-600">Program Areas</p>
-            </div>
-            <div className="text-center">
-              <div className="text-4xl md:text-5xl font-bold text-[#2C5F6F] mb-2">4+</div>
-              <p className="text-gray-600">Regions Covered</p>
-            </div>
           </div>
         </div>
       </section>
@@ -270,22 +178,22 @@ const BeneficiariesPage: React.FC<BeneficiariesPageProps> = ({ setCurrentPage })
       {/* CTA */}
       <section className="py-16 bg-[#D4A574]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-white mb-4">
-            Help Us Reach More People
-          </h2>
+          <h2 className="text-3xl font-bold text-white mb-4">Help Us Reach More People</h2>
           <p className="text-white/90 text-lg mb-8">
-            Your support helps us overcome challenges and expand our impact.
+            Your support helps strengthen community-led programs and services.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
-              onClick={() => setCurrentPage('contact')}
-              className="px-8 py-4 bg-white text-[#2C5F6F] rounded-full font-semibold hover:shadow-xl transition-all inline-flex items-center justify-center"
+              type="button"
+              onClick={() => navigate('/donate')}
+              className="px-8 py-4 bg-white text-primary rounded-full font-semibold hover:shadow-xl transition-all inline-flex items-center justify-center"
             >
               Support Our Work
               <ArrowRight className="w-5 h-5 ml-2" />
             </button>
             <button
-              onClick={() => setCurrentPage('partnerships')}
+              type="button"
+              onClick={() => navigate('/partnerships')}
               className="px-8 py-4 bg-transparent border-2 border-white text-white rounded-full font-semibold hover:bg-white/10 transition-all"
             >
               Partner With Us
@@ -293,8 +201,9 @@ const BeneficiariesPage: React.FC<BeneficiariesPageProps> = ({ setCurrentPage })
           </div>
         </div>
       </section>
-    </div>
+    </article>
   );
 };
 
 export default BeneficiariesPage;
+

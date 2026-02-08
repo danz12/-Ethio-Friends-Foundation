@@ -1,12 +1,14 @@
 import React, { useState } from 'react';
 import { Heart, Check, Calendar, Shield, Mail, User, ArrowRight, Loader2, BookOpen, Briefcase } from 'lucide-react';
-import { supabase } from '@/lib/supabase';
+import { useNavigate } from 'react-router-dom';
+import Seo from '@/components/Seo';
+import StructuredData from '@/components/StructuredData';
+import PageHero from '@/components/PageHero';
+import { submitDonation } from '@/lib/formsClient';
+import { EFFR_PROFILE } from '@/lib/effrProfile';
 
-interface DonatePageProps {
-  setCurrentPage: (page: string) => void;
-}
-
-const DonatePage: React.FC<DonatePageProps> = ({ setCurrentPage }) => {
+const DonatePage: React.FC = () => {
+  const navigate = useNavigate();
   const [selectedAmount, setSelectedAmount] = useState<number | null>(50);
   const [customAmount, setCustomAmount] = useState('');
   const [frequency, setFrequency] = useState<'one-time' | 'monthly' | 'yearly'>('one-time');
@@ -16,10 +18,10 @@ const DonatePage: React.FC<DonatePageProps> = ({ setCurrentPage }) => {
   const [error, setError] = useState('');
 
   const suggestedAmounts = [
-    { value: 25, label: '$25', impact: 'School supplies for one child' },
-    { value: 50, label: '$50', impact: 'Food assistance for one family' },
-    { value: 100, label: '$100', impact: 'Vocational training for one person' },
-    { value: 500, label: '$500', impact: 'Support a community workshop' },
+    { value: 25, label: '$25', impact: 'Supports community-led programs' },
+    { value: 50, label: '$50', impact: 'Strengthens refugee-led initiatives' },
+    { value: 100, label: '$100', impact: 'Helps expand program delivery' },
+    { value: 500, label: '$500', impact: 'Supports a larger activity or pilot' },
   ];
 
   const impactPillars = [
@@ -46,7 +48,10 @@ const DonatePage: React.FC<DonatePageProps> = ({ setCurrentPage }) => {
   ];
 
   const getAmount = () => {
-    if (customAmount) return parseFloat(customAmount);
+    if (customAmount.trim()) {
+      const parsed = Number(customAmount);
+      return Number.isFinite(parsed) ? parsed : 0;
+    }
     return selectedAmount || 0;
   };
 
@@ -58,6 +63,7 @@ const DonatePage: React.FC<DonatePageProps> = ({ setCurrentPage }) => {
   const handleCustomAmountChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCustomAmount(e.target.value);
     setSelectedAmount(null);
+    if (error) setError('');
   };
 
   const handleContinueToInfo = () => {
@@ -87,18 +93,13 @@ const DonatePage: React.FC<DonatePageProps> = ({ setCurrentPage }) => {
     setError('');
 
     try {
-      // Save donation to database
-      const { error: dbError } = await supabase
-        .from('donations')
-        .insert({
-          donor_name: donorInfo.name,
-          donor_email: donorInfo.email,
-          amount: getAmount(),
-          frequency: frequency,
-          status: 'submitted',
-        });
-
-      if (dbError) throw dbError;
+      await submitDonation({
+        donor_name: donorInfo.name,
+        donor_email: donorInfo.email,
+        amount: getAmount(),
+        frequency,
+        status: 'submitted',
+      });
 
       // Simulate payment processing delay
       await new Promise(resolve => setTimeout(resolve, 1500));
@@ -119,22 +120,26 @@ const DonatePage: React.FC<DonatePageProps> = ({ setCurrentPage }) => {
   };
 
   return (
-    <div className="min-h-screen pt-20">
+    <article className="min-h-screen pt-20">
+      <Seo
+        title="Donate"
+        description="Donate to EFFR to support refugee-led programs in Ethiopia. Choose a one-time or recurring donation to help empower refugee communities."
+      />
+      <StructuredData
+        breadcrumbs={[
+          { name: 'Home', path: '/' },
+          { name: 'Donate', path: '/donate' },
+        ]}
+      />
       {/* Hero Section */}
-      <section className="relative py-16 bg-gradient-to-br from-[#2C5F6F] to-[#1a3d47]">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <div className="inline-flex items-center px-4 py-2 bg-[#D4A574]/20 rounded-full mb-6">
-            <Heart className="w-4 h-4 text-[#D4A574] mr-2" />
-            <span className="text-[#D4A574] text-sm font-medium">Make a Difference Today</span>
-          </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Support Our Mission
-          </h1>
-          <p className="text-white/90 text-xl max-w-2xl mx-auto">
-            Your donation empowers refugee communities through education, livelihoods, and protection programs.
-          </p>
-        </div>
-      </section>
+      <PageHero
+        imageSrc="/images/official/photo_2024-11-28_13-05-39.jpg"
+        align="center"
+        badge={{ label: 'Make a Difference Today', icon: Heart }}
+        title="Support Our Mission"
+        description="Your donation empowers refugee communities through education, livelihoods, and protection programs."
+        contentClassName="max-w-4xl"
+      />
 
       {/* How Your Donation Helps */}
       <section className="-mt-10 pb-6">
@@ -193,6 +198,9 @@ const DonatePage: React.FC<DonatePageProps> = ({ setCurrentPage }) => {
                 <h2 className="text-2xl font-bold text-[#2C5F6F] mb-6 text-center">
                   Choose Your Donation Amount
                 </h2>
+                <p className="text-center text-sm text-gray-600 mb-6">
+                  Choose one amount or enter a custom value of at least $1.
+                </p>
 
                 {/* Frequency Selection */}
                 <div className="flex justify-center mb-8">
@@ -241,6 +249,7 @@ const DonatePage: React.FC<DonatePageProps> = ({ setCurrentPage }) => {
                     <input
                       type="number"
                       min="1"
+                      step="1"
                       value={customAmount}
                       onChange={handleCustomAmountChange}
                       placeholder="Enter amount"
@@ -257,7 +266,8 @@ const DonatePage: React.FC<DonatePageProps> = ({ setCurrentPage }) => {
 
                 <button
                   onClick={handleContinueToInfo}
-                  className="w-full py-4 bg-gradient-to-r from-[#D4A574] to-[#c49464] text-white rounded-lg font-semibold hover:shadow-lg transition-all flex items-center justify-center"
+                  disabled={getAmount() < 1}
+                  className="w-full py-4 bg-gradient-to-r from-[#D4A574] to-[#c49464] text-white rounded-lg font-semibold hover:shadow-lg transition-all flex items-center justify-center disabled:opacity-60 disabled:cursor-not-allowed"
                 >
                   Continue
                   <ArrowRight className="w-5 h-5 ml-2" />
@@ -429,7 +439,7 @@ const DonatePage: React.FC<DonatePageProps> = ({ setCurrentPage }) => {
                     Make Another Donation
                   </button>
                   <button
-                    onClick={() => setCurrentPage('home')}
+                    onClick={() => navigate('/')}
                     className="px-6 py-3 border-2 border-[#2C5F6F] text-[#2C5F6F] rounded-lg font-semibold hover:bg-[#2C5F6F]/5 transition-colors"
                   >
                     Return Home
@@ -466,22 +476,28 @@ const DonatePage: React.FC<DonatePageProps> = ({ setCurrentPage }) => {
             <h2 className="text-2xl font-bold text-[#2C5F6F] mb-8">Your Impact</h2>
             <div className="grid md:grid-cols-3 gap-8">
               <div className="p-6 bg-white/80 ring-1 ring-black/5 rounded-2xl">
-                <div className="text-3xl font-bold text-[#D4A574] mb-2">5,000+</div>
-                <p className="text-gray-600">Beneficiaries Reached</p>
+                <div className="text-3xl font-bold text-[#D4A574] mb-2">
+                  {EFFR_PROFILE.achievements.relief.cashAssistanceFamilies.toLocaleString()}
+                </div>
+                <p className="text-gray-600">Families supported (Ramadan cash)</p>
               </div>
               <div className="p-6 bg-white/80 ring-1 ring-black/5 rounded-2xl">
-                <div className="text-3xl font-bold text-[#D4A574] mb-2">850+</div>
-                <p className="text-gray-600">Families Supported</p>
+                <div className="text-3xl font-bold text-[#D4A574] mb-2">
+                  {EFFR_PROFILE.achievements.relief.foodBasketFamilies.toLocaleString()}
+                </div>
+                <p className="text-gray-600">Families supported (food baskets)</p>
               </div>
               <div className="p-6 bg-white/80 ring-1 ring-black/5 rounded-2xl">
-                <div className="text-3xl font-bold text-[#D4A574] mb-2">120+</div>
-                <p className="text-gray-600">Workshops Conducted</p>
+                <div className="text-3xl font-bold text-[#D4A574] mb-2">
+                  {EFFR_PROFILE.achievements.legalAwareness.translatedLanguages.toLocaleString()}
+                </div>
+                <p className="text-gray-600">Languages translated (labor law)</p>
               </div>
             </div>
           </div>
         </div>
       </section>
-    </div>
+    </article>
   );
 };
 

@@ -22,3 +22,10 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
+
+# Local env files (copy `.env.example` to `.env`)
+.env
+
+# Local source documents (not deployed)
+file/
+tmp/

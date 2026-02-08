@@ -1,265 +1,225 @@
-import React, { useState } from 'react';
-import { TrendingUp, Users, Heart, BookOpen, Briefcase, Shield, Calendar, MapPin, Award, ChevronRight, X } from 'lucide-react';
+import React from 'react';
+import { Award, BookOpen, ChevronRight, Handshake, Heart, Languages, Scale, Users } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import Seo from '@/components/Seo';
+import StructuredData from '@/components/StructuredData';
+import PageHero from '@/components/PageHero';
+import OptimizedImage from '@/components/OptimizedImage';
+import { EFFR_PROFILE } from '@/lib/effrProfile';
 
-interface ImpactPageProps {
-  setCurrentPage: (page: string) => void;
-}
-
-const ImpactPage: React.FC<ImpactPageProps> = ({ setCurrentPage }) => {
-  const [selectedStory, setSelectedStory] = useState<number | null>(null);
+const ImpactPage: React.FC = () => {
+  const navigate = useNavigate();
 
   const impactStats = [
-    { label: 'Families Supported', value: '850+', icon: Users, color: 'bg-blue-500' },
-    { label: 'Workshops Conducted', value: '120+', icon: Calendar, color: 'bg-emerald-500' },
-    { label: 'Beneficiaries Reached', value: '5,000+', icon: Heart, color: 'bg-rose-500' },
-    { label: 'Partner Organizations', value: '25+', icon: Award, color: 'bg-purple-500' },
-    { label: 'Children Educated', value: '1,500+', icon: BookOpen, color: 'bg-amber-500' },
-    { label: 'Jobs Created', value: '400+', icon: Briefcase, color: 'bg-cyan-500' },
+    {
+      label: 'Families supported (Ramadan cash)',
+      value: EFFR_PROFILE.achievements.relief.cashAssistanceFamilies.toLocaleString(),
+      icon: Heart,
+      color: 'bg-rose-500',
+    },
+    {
+      label: 'Families supported (food baskets)',
+      value: EFFR_PROFILE.achievements.relief.foodBasketFamilies.toLocaleString(),
+      icon: Users,
+      color: 'bg-emerald-500',
+    },
+    {
+      label: 'Languages translated (labor law)',
+      value: EFFR_PROFILE.achievements.legalAwareness.translatedLanguages.toLocaleString(),
+      icon: Languages,
+      color: 'bg-blue-500',
+    },
+    {
+      label: 'Field study families (Back to School)',
+      value: EFFR_PROFILE.achievements.backToSchool.fieldStudyFamilies.toLocaleString(),
+      icon: BookOpen,
+      color: 'bg-amber-500',
+    },
+    {
+      label: 'Out-of-school children identified (approx.)',
+      value: `~${EFFR_PROFILE.achievements.backToSchool.outOfSchoolChildrenApprox.toLocaleString()}`,
+      icon: BookOpen,
+      color: 'bg-cyan-500',
+    },
+    {
+      label: 'Children in Amharic course',
+      value: EFFR_PROFILE.achievements.backToSchool.amharicCourseChildren.toLocaleString(),
+      icon: BookOpen,
+      color: 'bg-purple-500',
+    },
   ];
 
   const achievements = [
     {
-      title: 'Advocacy & Representation',
-      description: 'Leading advocacy efforts for refugee rights and RLO inclusion in policy discussions at national and international levels.',
-      icon: Shield,
-      stats: '15+ policy engagements',
-    },
-    {
-      title: 'Psychosocial Support Partnership',
-      description: 'Partnered with Danish Refugee Council (DRC) to provide comprehensive psychosocial support services.',
+      title: 'Relief Assistance',
+      description:
+        'Emergency relief support provided through community-based efforts and charitable donors.',
       icon: Heart,
-      stats: '600+ individuals supported',
+      details: [
+        `Ramadan cash assistance for ${EFFR_PROFILE.achievements.relief.cashAssistanceFamilies} families.`,
+        `Food basket support for ${EFFR_PROFILE.achievements.relief.foodBasketFamilies} families.`,
+      ],
+      ctaLabel: 'See impact',
+      to: '/impact',
     },
     {
-      title: 'Cash & Food Assistance',
-      description: 'Distributed emergency cash and food assistance to hundreds of vulnerable refugee families.',
-      icon: Users,
-      stats: '850+ families assisted',
+      title: 'Ethiopian Labor Law Awareness',
+      description:
+        'An awareness project helping refugees understand labor rights under Ethiopian law.',
+      icon: Scale,
+      details: [
+        `Theme: “${EFFR_PROFILE.achievements.legalAwareness.theme}”.`,
+        `Translated into ${EFFR_PROFILE.achievements.legalAwareness.translatedLanguages} languages.`,
+        `Supported by ${EFFR_PROFILE.achievements.legalAwareness.supporter} and implemented with ${EFFR_PROFILE.achievements.legalAwareness.partner}.`,
+        `Phase 2 supported by ${EFFR_PROFILE.achievements.legalAwareness.phase2Supporter} in ${EFFR_PROFILE.achievements.legalAwareness.phase2Locations.join(
+          ' and '
+        )}.`,
+      ],
+      ctaLabel: 'Learn about the project',
+      to: '/legal-awareness',
     },
     {
-      title: 'Education Materials',
-      description: 'Provided school supplies, uniforms, and educational materials to refugee children.',
+      title: 'Back to School (Lemi Kura)',
+      description:
+        'A pilot education initiative supporting refugee children’s access to education in Addis Ababa.',
       icon: BookOpen,
-      stats: '1,500+ children supported',
+      details: [
+        `Supported by ${EFFR_PROFILE.achievements.backToSchool.supporter}.`,
+        `Field study conducted with ${EFFR_PROFILE.achievements.backToSchool.fieldStudyFamilies} families.`,
+        `Approximately ${EFFR_PROFILE.achievements.backToSchool.outOfSchoolChildrenApprox} out-of-school children identified.`,
+        `School supplies provided to ${EFFR_PROFILE.achievements.backToSchool.schoolSuppliesChildren} children.`,
+        `${EFFR_PROFILE.achievements.backToSchool.amharicCourseDurationMonths}-month Amharic course for ${EFFR_PROFILE.achievements.backToSchool.amharicCourseChildren} children.`,
+      ],
+      ctaLabel: 'Explore programs',
+      to: '/programs/child-youth',
     },
     {
-      title: 'Labor Law Awareness',
-      description: 'Conducted workshops and campaigns on Ethiopian labor law rights for refugees.',
-      icon: Briefcase,
-      stats: '2,000+ participants',
+      title: 'Psychosocial Support (MHPSS)',
+      description:
+        'Community-based psychosocial support and social cohesion activities implemented in partnership with service providers.',
+      icon: Handshake,
+      details: [
+        `MHPSS partner: ${EFFR_PROFILE.achievements.partnerships.mhpssPartner}.`,
+        'Child-friendly psychosocial activities and community support sessions (with partners).',
+      ],
+      ctaLabel: 'View MHPSS program',
+      to: '/programs/mhpss',
     },
     {
-      title: 'Social Cohesion',
-      description: 'Organized community meetings and events promoting social cohesion between refugees and host communities.',
-      icon: TrendingUp,
-      stats: '50+ community events',
-    },
-  ];
-
-  const successStories = [
-    {
-      name: 'Amina Mohammed',
-      title: 'From Refugee to Entrepreneur',
-      story: 'After fleeing conflict in her home country, Amina arrived in Ethiopia with nothing. Through EFFR\'s Economic Empowerment program, she learned business skills and received microfinance support. Today, she runs a successful tailoring business that employs three other refugees.',
-      image: 'https://d64gsuwffb70l.cloudfront.net/698470e793dd34d81ce542cb_1770287570278_b23d1ebd.jpg',
-      program: 'Economic Empowerment',
-    },
-    {
-      name: 'Samuel Tesfaye',
-      title: 'Healing Through Community',
-      story: 'Samuel struggled with trauma after his displacement. The MHPSS program connected him with counseling services and a peer support group. Now recovered, he has become a peer counselor himself, helping others on their healing journey.',
-      image: 'https://d64gsuwffb70l.cloudfront.net/698470e793dd34d81ce542cb_1770287572746_e5472e29.jpg',
-      program: 'Psychosocial Support',
-    },
-    {
-      name: 'Fatima Hassan',
-      title: 'Education Opens Doors',
-      story: 'Fatima\'s children were out of school for two years due to displacement. EFFR\'s Child & Youth program provided school supplies and tutoring support. Her eldest daughter is now top of her class and dreams of becoming a doctor.',
-      image: 'https://d64gsuwffb70l.cloudfront.net/698470e793dd34d81ce542cb_1770287572721_85927ff1.jpg',
-      program: 'Child & Youth',
+      title: 'Advocacy & Recognition',
+      description:
+        'EFFR works to ensure refugee voices are heard and refugee-led solutions are meaningfully included.',
+      icon: Award,
+      details: [...EFFR_PROFILE.highlights],
+      ctaLabel: 'About EFFR',
+      to: '/about',
     },
   ];
 
   const galleryImages = [
-    { src: 'https://d64gsuwffb70l.cloudfront.net/698470e793dd34d81ce542cb_1770287549968_1b361fc2.jpg', caption: 'Community Workshop' },
-    { src: 'https://d64gsuwffb70l.cloudfront.net/698470e793dd34d81ce542cb_1770287550924_b97c585c.jpg', caption: 'Family Support' },
-    { src: 'https://d64gsuwffb70l.cloudfront.net/698470e793dd34d81ce542cb_1770287524015_3ed19abb.jpg', caption: 'Education Program' },
-    { src: 'https://d64gsuwffb70l.cloudfront.net/698470e793dd34d81ce542cb_1770287526096_911c3873.jpg', caption: 'Youth Activities' },
-    { src: 'https://d64gsuwffb70l.cloudfront.net/698470e793dd34d81ce542cb_1770287556330_3745f45d.jpg', caption: 'Community Meeting' },
-    { src: 'https://d64gsuwffb70l.cloudfront.net/698470e793dd34d81ce542cb_1770287551494_08677bf2.jpg', caption: 'Skills Training' },
+    { src: '/images/official/photo_2024-11-28_13-05-01.jpg', caption: 'Community workshop' },
+    { src: '/images/official/photo_2024-11-28_13-05-23.jpg', caption: 'Training session' },
+    { src: '/images/official/photo_2024-11-28_13-05-36.jpg', caption: 'Group discussion' },
+    { src: '/images/official/photo_2024-11-28_13-05-40.jpg', caption: 'Community gathering' },
+    { src: '/images/official/photo_2026-02-07_21-33-53.jpg', caption: 'Community meeting' },
+    { src: '/images/official/photo_2024-11-28_13-05-39.jpg', caption: 'Workshop participants' },
   ];
 
   return (
-    <div className="min-h-screen pt-20">
-      {/* Hero Section */}
-      <section className="relative py-20 bg-gradient-to-br from-[#2C5F6F] to-[#1a3d47]">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl">
-            <span className="text-[#D4A574] font-semibold text-sm uppercase tracking-wider">Our Impact</span>
-            <h1 className="text-4xl md:text-5xl font-bold text-white mt-2 mb-6">
-              Activities & Impact
-            </h1>
-            <p className="text-white/90 text-xl leading-relaxed">
-              Real achievements and lasting change in refugee communities through our comprehensive programs and partnerships.
-            </p>
-          </div>
-        </div>
-      </section>
+    <article className="min-h-screen pt-20">
+      <Seo
+        title="Impact"
+        description="See EFFR’s impact and key activities from our official documents — relief assistance, legal awareness, education support, and psychosocial wellbeing."
+      />
+      <StructuredData
+        breadcrumbs={[
+          { name: 'Home', path: '/' },
+          { name: 'Impact', path: '/impact' },
+        ]}
+      />
 
-      {/* Impact Stats */}
-      <section className="py-16 bg-white relative -mt-8 z-10">
+      <PageHero
+        imageSrc="/images/official/photo_2026-02-07_21-33-53.jpg"
+        badge={{ label: 'Impact & Activities' }}
+        title="Impact"
+        description="A transparent overview of key activities and achievements highlighted in EFFR’s official documents."
+      />
+
+      {/* Stats */}
+      <section className="-mt-10 pb-6">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="bg-white rounded-2xl shadow-2xl p-8 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
-            {impactStats.map((stat, idx) => (
-              <div key={idx} className="text-center">
-                <div className={`w-12 h-12 ${stat.color} rounded-xl flex items-center justify-center mx-auto mb-3`}>
-                  <stat.icon className="w-6 h-6 text-white" />
+          <div className="rounded-3xl bg-white/80 backdrop-blur-md border border-black/5 shadow-sm p-8 md:p-10">
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-6">
+              {impactStats.map((stat) => (
+                <div key={stat.label} className="text-center">
+                  <div className={`mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-2xl ${stat.color}`}>
+                    <stat.icon className="h-6 w-6 text-white" />
+                  </div>
+                  <div className="text-3xl md:text-4xl font-bold text-primary mb-1">{stat.value}</div>
+                  <p className="text-muted-foreground text-sm">{stat.label}</p>
                 </div>
-                <div className="text-2xl md:text-3xl font-bold text-[#2C5F6F] mb-1">
-                  {stat.value}
-                </div>
-                <p className="text-gray-600 text-sm">{stat.label}</p>
-              </div>
-            ))}
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
-      {/* Key Achievements */}
-      <section className="py-20 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="text-center mb-16">
-            <span className="text-[#D4A574] font-semibold text-sm uppercase tracking-wider">Achievements</span>
-            <h2 className="text-3xl md:text-4xl font-bold text-[#2C5F6F] mt-2 mb-4">
-              Key Accomplishments
-            </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto text-lg">
-              Highlights of our work and the difference we've made together.
-            </p>
-          </div>
-
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {achievements.map((achievement, idx) => (
-              <div
-                key={idx}
-                className="bg-white rounded-2xl p-6 shadow-lg hover:shadow-xl transition-shadow"
-              >
-                <div className="w-14 h-14 bg-[#2C5F6F]/10 rounded-xl flex items-center justify-center mb-4">
-                  <achievement.icon className="w-7 h-7 text-[#2C5F6F]" />
-                </div>
-                <h3 className="text-xl font-bold text-[#2C5F6F] mb-2">{achievement.title}</h3>
-                <p className="text-gray-600 mb-4">{achievement.description}</p>
-                <span className="inline-block px-3 py-1 bg-[#D4A574]/10 text-[#D4A574] rounded-full text-sm font-semibold">
-                  {achievement.stats}
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* Success Stories */}
+      {/* Achievement cards */}
       <section className="py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <span className="text-[#D4A574] font-semibold text-sm uppercase tracking-wider">Real Stories</span>
-            <h2 className="text-3xl md:text-4xl font-bold text-[#2C5F6F] mt-2 mb-4">
-              Success Stories
-            </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto text-lg">
-              Meet the individuals whose lives have been transformed through our programs.
+            <span className="text-secondary font-semibold text-sm uppercase tracking-wider">Highlights</span>
+            <h2 className="text-3xl md:text-4xl font-bold text-primary mt-2 mb-4">Key Achievements</h2>
+            <p className="text-muted-foreground max-w-2xl mx-auto text-lg">
+              These highlights are based on EFFR’s official documents and activity summaries.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {successStories.map((story, idx) => (
-              <div
-                key={idx}
-                className="bg-gray-50 rounded-2xl overflow-hidden shadow-lg hover:shadow-xl transition-shadow cursor-pointer group"
-                onClick={() => setSelectedStory(idx)}
-              >
-                <div className="relative h-64 overflow-hidden">
-                  <img
-                    src={story.image}
-                    alt={story.name}
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
-                  <div className="absolute bottom-4 left-4 right-4">
-                    <span className="inline-block px-2 py-1 bg-[#D4A574] text-white text-xs rounded-full mb-2">
-                      {story.program}
-                    </span>
-                    <h3 className="text-white font-bold text-lg">{story.name}</h3>
-                  </div>
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {achievements.map((item) => (
+              <div key={item.title} className="bg-gray-50 rounded-2xl p-8 hover:shadow-lg transition-shadow">
+                <div className="w-14 h-14 bg-primary rounded-2xl flex items-center justify-center mb-5">
+                  <item.icon className="w-7 h-7 text-white" />
                 </div>
-                <div className="p-6">
-                  <h4 className="font-bold text-[#2C5F6F] mb-2">{story.title}</h4>
-                  <p className="text-gray-600 text-sm line-clamp-3">{story.story}</p>
-                  <button className="mt-4 text-[#D4A574] font-semibold text-sm flex items-center group-hover:translate-x-1 transition-transform">
-                    Read Full Story <ChevronRight className="w-4 h-4 ml-1" />
-                  </button>
-                </div>
+                <h3 className="text-xl font-bold text-primary mb-2">{item.title}</h3>
+                <p className="text-muted-foreground mb-5">{item.description}</p>
+                <ul className="space-y-3 mb-6">
+                  {item.details.map((d) => (
+                    <li key={d} className="flex items-start gap-3">
+                      <span aria-hidden className="mt-2 h-2 w-2 rounded-full bg-secondary" />
+                      <span className="text-muted-foreground text-sm">{d}</span>
+                    </li>
+                  ))}
+                </ul>
+                <button
+                  type="button"
+                  onClick={() => navigate(item.to)}
+                  className="inline-flex items-center text-secondary font-semibold text-sm hover:translate-x-1 transition-transform"
+                >
+                  {item.ctaLabel} <ChevronRight className="w-4 h-4 ml-1" />
+                </button>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Story Modal */}
-      {selectedStory !== null && (
-        <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-          <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
-            <div className="relative">
-              <img
-                src={successStories[selectedStory].image}
-                alt={successStories[selectedStory].name}
-                className="w-full h-64 object-cover"
-              />
-              <button
-                onClick={() => setSelectedStory(null)}
-                className="absolute top-4 right-4 w-10 h-10 bg-white rounded-full flex items-center justify-center shadow-lg hover:bg-gray-100"
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-            <div className="p-8">
-              <span className="inline-block px-3 py-1 bg-[#D4A574]/10 text-[#D4A574] rounded-full text-sm font-semibold mb-3">
-                {successStories[selectedStory].program}
-              </span>
-              <h2 className="text-2xl font-bold text-[#2C5F6F] mb-2">
-                {successStories[selectedStory].name}
-              </h2>
-              <h3 className="text-lg text-gray-600 mb-4">
-                {successStories[selectedStory].title}
-              </h3>
-              <p className="text-gray-700 leading-relaxed">
-                {successStories[selectedStory].story}
-              </p>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {/* Photo Gallery */}
+      {/* Gallery */}
       <section className="py-20 bg-gray-50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center mb-16">
-            <span className="text-[#D4A574] font-semibold text-sm uppercase tracking-wider">Gallery</span>
-            <h2 className="text-3xl md:text-4xl font-bold text-[#2C5F6F] mt-2 mb-4">
-              Our Work in Pictures
-            </h2>
+            <span className="text-secondary font-semibold text-sm uppercase tracking-wider">Gallery</span>
+            <h2 className="text-3xl md:text-4xl font-bold text-primary mt-2 mb-4">Our Work in Pictures</h2>
           </div>
 
           <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-            {galleryImages.map((img, idx) => (
-              <div
-                key={idx}
-                className="relative rounded-xl overflow-hidden shadow-lg group"
-              >
-                <img
+            {galleryImages.map((img) => (
+              <div key={img.src} className="relative rounded-xl overflow-hidden shadow-lg group">
+                <OptimizedImage
                   src={img.src}
                   alt={img.caption}
                   className="w-full h-48 md:h-64 object-cover group-hover:scale-105 transition-transform duration-500"
+                  loading="lazy"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
                   <div className="absolute bottom-4 left-4">
@@ -275,21 +235,21 @@ const ImpactPage: React.FC<ImpactPageProps> = ({ setCurrentPage }) => {
       {/* CTA */}
       <section className="py-16 bg-[#2C5F6F]">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h2 className="text-3xl font-bold text-white mb-4">
-            Be Part of Our Impact
-          </h2>
+          <h2 className="text-3xl font-bold text-white mb-4">Be Part of the Impact</h2>
           <p className="text-white/90 text-lg mb-8">
-            Join us in creating lasting change for refugee communities.
+            Partner with EFFR or support our work to strengthen refugee-led solutions.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
-              onClick={() => setCurrentPage('contact')}
+              type="button"
+              onClick={() => navigate('/donate')}
               className="px-8 py-4 bg-[#D4A574] text-white rounded-full font-semibold hover:shadow-xl transition-all"
             >
               Support Our Work
             </button>
             <button
-              onClick={() => setCurrentPage('partnerships')}
+              type="button"
+              onClick={() => navigate('/partnerships')}
               className="px-8 py-4 bg-transparent border-2 border-white text-white rounded-full font-semibold hover:bg-white/10 transition-all"
             >
               Partner With Us
@@ -297,7 +257,7 @@ const ImpactPage: React.FC<ImpactPageProps> = ({ setCurrentPage }) => {
           </div>
         </div>
       </section>
-    </div>
+    </article>
   );
 };
 

@@ -1,70 +1,42 @@
-import React, { useState, useEffect } from 'react';
+import React, { Suspense, useEffect } from 'react';
+import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import Header from './Header';
 import Footer from './Footer';
 import StickyDonationBar from './StickyDonationBar';
-import HomePage from './pages/HomePage';
-import AboutPage from './pages/AboutPage';
-import ProgramsPage from './pages/ProgramsPage';
-import ProgramDetailPage from './pages/ProgramDetailPage';
-import ImpactPage from './pages/ImpactPage';
-import LegalAwarenessPage from './pages/LegalAwarenessPage';
-import MediaPage from './pages/MediaPage';
-import PartnershipsPage from './pages/PartnershipsPage';
-import ContactPage from './pages/ContactPage';
-import BeneficiariesPage from './pages/BeneficiariesPage';
-import DonatePage from './pages/DonatePage';
-import PrivacyPage from './pages/PrivacyPage';
-import TermsPage from './pages/TermsPage';
+import Analytics from '@/components/Analytics';
+
+const RouteFallback = () => (
+  <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16" role="status" aria-live="polite">
+    <div className="inline-flex items-center gap-3 text-muted-foreground">
+      <span
+        aria-hidden
+        className="h-4 w-4 animate-spin rounded-full border-2 border-muted-foreground/30 border-t-muted-foreground"
+      />
+      <span>Loading...</span>
+    </div>
+  </div>
+);
 
 const AppLayout: React.FC = () => {
-  const [currentPage, setCurrentPage] = useState('home');
+  const location = useLocation();
+  const navigate = useNavigate();
 
-  // Scroll to top when page changes
+  // Back-compat for old hash-based URLs (e.g. /#/about).
+  useEffect(() => {
+    const hash = location.hash;
+    if (!hash) return;
+
+    const hashPath = hash.startsWith('#!/') ? hash.slice(2) : hash.startsWith('#/') ? hash.slice(1) : '';
+    if (!hashPath) return;
+
+    navigate(hashPath, { replace: true });
+  }, [location.hash, navigate]);
+
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-  }, [currentPage]);
+  }, [location.pathname]);
 
-  const handleDonateClick = () => {
-    setCurrentPage('donate');
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const renderPage = () => {
-    // Handle program detail pages
-    if (currentPage.startsWith('program-')) {
-      const programId = currentPage.replace('program-', '');
-      return <ProgramDetailPage programId={programId} setCurrentPage={setCurrentPage} />;
-    }
-
-    switch (currentPage) {
-      case 'home':
-        return <HomePage setCurrentPage={setCurrentPage} />;
-      case 'about':
-        return <AboutPage setCurrentPage={setCurrentPage} />;
-      case 'programs':
-        return <ProgramsPage setCurrentPage={setCurrentPage} />;
-      case 'impact':
-        return <ImpactPage setCurrentPage={setCurrentPage} />;
-      case 'legal-awareness':
-        return <LegalAwarenessPage setCurrentPage={setCurrentPage} />;
-      case 'media':
-        return <MediaPage setCurrentPage={setCurrentPage} />;
-      case 'partnerships':
-        return <PartnershipsPage setCurrentPage={setCurrentPage} />;
-      case 'contact':
-        return <ContactPage setCurrentPage={setCurrentPage} />;
-      case 'beneficiaries':
-        return <BeneficiariesPage setCurrentPage={setCurrentPage} />;
-      case 'donate':
-        return <DonatePage setCurrentPage={setCurrentPage} />;
-      case 'privacy':
-        return <PrivacyPage setCurrentPage={setCurrentPage} />;
-      case 'terms':
-        return <TermsPage setCurrentPage={setCurrentPage} />;
-      default:
-        return <HomePage setCurrentPage={setCurrentPage} />;
-    }
-  };
+  const isHome = location.pathname === '/';
 
   return (
     <div className="relative isolate min-h-screen overflow-x-hidden bg-gradient-to-b from-teal-50/60 via-background to-gold-50/70 font-sans">
@@ -74,14 +46,15 @@ const AppLayout: React.FC = () => {
         <div className="absolute top-1/3 -right-28 h-96 w-96 rounded-full bg-gold-200/40 blur-3xl" />
         <div className="absolute -bottom-36 left-1/3 h-[28rem] w-[28rem] rounded-full bg-teal-100/40 blur-3xl" />
       </div>
-      <Header currentPage={currentPage} setCurrentPage={setCurrentPage} />
-      <main>
-        {renderPage()}
+      <Header />
+      <Analytics />
+      <main id="main-content">
+        <Suspense fallback={<RouteFallback />}>
+          <Outlet />
+        </Suspense>
       </main>
-      <Footer setCurrentPage={setCurrentPage} />
-      {currentPage === 'home' && (
-        <StickyDonationBar onDonateClick={handleDonateClick} />
-      )}
+      <Footer />
+      {isHome && <StickyDonationBar onDonateClick={() => navigate('/donate')} />}
     </div>
   );
 };

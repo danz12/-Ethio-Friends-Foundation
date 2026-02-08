@@ -1,10 +1,9 @@
 import React from 'react';
-import { Briefcase, Users, Shield, Heart, BookOpen, Home, ArrowLeft, CheckCircle, Target, Users2, type LucideIcon } from 'lucide-react';
-
-interface ProgramDetailPageProps {
-  programId: string;
-  setCurrentPage: (page: string) => void;
-}
+import { Briefcase, Users, Shield, Heart, BookOpen, Home, ArrowLeft, CheckCircle, Target, Users2, Accessibility, type LucideIcon } from 'lucide-react';
+import { useNavigate, useParams } from 'react-router-dom';
+import Seo from '@/components/Seo';
+import StructuredData from '@/components/StructuredData';
+import OptimizedImage from '@/components/OptimizedImage';
 
 type ProgramActivity = { title: string; desc: string };
 
@@ -25,217 +24,292 @@ type Program = {
 const programData: Record<string, Program> = {
   'economic-empowerment': {
     title: 'Economic Empowerment & Entrepreneurship',
-    subtitle: 'Building Sustainable Livelihoods',
-    description: 'Our Economic Empowerment program focuses on building sustainable livelihoods through entrepreneurship training, business development support, and access to microfinance opportunities. We believe that economic independence is key to refugee dignity and self-reliance.',
+    subtitle: 'Entrepreneurship and Self-Reliance',
+    description:
+      'This program supports refugee self-reliance through entrepreneurship-focused training, mentorship, and community-led support that helps participants build sustainable livelihoods.',
     icon: Briefcase,
     color: 'from-emerald-500 to-teal-600',
-    image: 'https://d64gsuwffb70l.cloudfront.net/698470e793dd34d81ce542cb_1770287503428_5f515e73.jpg',
+    image: '/images/official/photo_2024-11-28_13-05-01.jpg',
     objectives: [
-      'Develop entrepreneurial skills among refugees',
-      'Facilitate access to microfinance and savings groups',
-      'Create market linkages for refugee-owned businesses',
-      'Provide ongoing mentorship and business support',
+      'Build practical entrepreneurship and business skills',
+      'Strengthen self-reliance and income-generating capacity',
+      'Support peer learning and mentorship',
+      'Connect participants to opportunities and services where available',
     ],
     activities: [
-      { title: 'Business Skills Training', desc: 'Comprehensive workshops covering business planning, financial management, and marketing.' },
-      { title: 'Microfinance Groups', desc: 'Village savings and loan associations to provide access to capital.' },
-      { title: 'Market Access', desc: 'Connecting refugee entrepreneurs with local and regional markets.' },
-      { title: 'Mentorship Program', desc: 'Pairing new entrepreneurs with experienced business owners.' },
+      { title: 'Entrepreneurship Training', desc: 'Workshops on core business skills and practical planning.' },
+      { title: 'Mentorship & Coaching', desc: 'Guidance through peer learning and community mentoring.' },
+      { title: 'Skills Building', desc: 'Capacity building tailored to local opportunities and constraints.' },
+      { title: 'Linkages & Referrals', desc: 'Connecting participants to services and opportunities with partners.' },
     ],
-    beneficiaries: 'Refugee adults (18+) with interest in starting or growing small businesses',
-    stats: { reached: '500+', businesses: '150+', groups: '25' },
+    beneficiaries: 'Refugees and host community members seeking entrepreneurship skills and support.',
+    stats: { focus: 'Entrepreneurship', approach: 'Training & mentorship', model: 'Community-led' },
     gallery: [
-      'https://d64gsuwffb70l.cloudfront.net/698470e793dd34d81ce542cb_1770287503428_5f515e73.jpg',
-      'https://d64gsuwffb70l.cloudfront.net/698470e793dd34d81ce542cb_1770287549968_1b361fc2.jpg',
-      'https://d64gsuwffb70l.cloudfront.net/698470e793dd34d81ce542cb_1770287550924_b97c585c.jpg',
+      '/images/official/photo_2024-11-28_13-05-01.jpg',
+      '/images/official/photo_2024-11-28_13-05-23.jpg',
+      '/images/official/photo_2024-11-28_13-05-39.jpg',
     ],
   },
   'livelihood': {
     title: 'Livelihood Program',
-    subtitle: 'Skills for Independence',
-    description: 'The Livelihood Program provides vocational skills training and employment opportunities to help refugees achieve economic independence. We focus on market-relevant skills that lead to sustainable employment.',
+    subtitle: 'Skills Development',
+    description:
+      'The Livelihood Program supports skills development and pathways to livelihoods through community-based learning, coaching, and connections to opportunities.',
     icon: Users,
     color: 'from-blue-500 to-indigo-600',
-    image: 'https://d64gsuwffb70l.cloudfront.net/698470e793dd34d81ce542cb_1770287503617_ce61aba2.jpg',
+    image: '/images/official/photo_2024-11-28_13-05-36.jpg',
     objectives: [
-      'Provide market-relevant vocational training',
-      'Facilitate job placement and employment',
-      'Support cooperative formation',
-      'Issue recognized skills certifications',
+      'Support vocational and practical skills development',
+      'Increase employability and livelihood options',
+      'Encourage peer learning and cooperative approaches where suitable',
+      'Connect participants to services and opportunities with partners',
     ],
     activities: [
-      { title: 'Vocational Training', desc: 'Courses in tailoring, carpentry, electronics, and other trades.' },
-      { title: 'Job Placement', desc: 'Connecting trained refugees with employment opportunities.' },
-      { title: 'Certification', desc: 'Providing recognized certificates for completed training.' },
-      { title: 'Cooperative Support', desc: 'Helping groups form cooperatives for collective enterprise.' },
+      { title: 'Skills Training', desc: 'Community-driven training aligned to local needs and context.' },
+      { title: 'Work Readiness', desc: 'Guidance on workplace skills and preparedness.' },
+      { title: 'Peer Learning', desc: 'Group learning and experience sharing for practical growth.' },
+      { title: 'Referrals', desc: 'Linkages to partners and relevant services where available.' },
     ],
-    beneficiaries: 'Working-age refugees seeking employment or vocational skills',
-    stats: { trained: '800+', employed: '400+', cooperatives: '15' },
+    beneficiaries: 'Working-age refugees and host community members seeking skills for livelihoods.',
+    stats: { focus: 'Skills', approach: 'Training & coaching', model: 'Community-based' },
     gallery: [
-      'https://d64gsuwffb70l.cloudfront.net/698470e793dd34d81ce542cb_1770287503617_ce61aba2.jpg',
-      'https://d64gsuwffb70l.cloudfront.net/698470e793dd34d81ce542cb_1770287556330_3745f45d.jpg',
-      'https://d64gsuwffb70l.cloudfront.net/698470e793dd34d81ce542cb_1770287551494_08677bf2.jpg',
+      '/images/official/photo_2024-11-28_13-05-36.jpg',
+      '/images/official/photo_2024-11-28_13-05-40.jpg',
+      '/images/official/photo_2024-11-28_13-05-42.jpg',
     ],
   },
   'protection-gbv': {
-    title: 'Protection & Gender-Based Violence (GBV)',
-    subtitle: 'Safety and Support for All',
-    description: 'Our Protection & GBV program works to prevent gender-based violence and provide comprehensive support services to survivors. We create safe spaces and build community awareness to address this critical issue.',
+    title: 'Protection and GBV Program',
+    subtitle: 'Safety and Dignity',
+    description:
+      'This program supports protection and safety through community awareness, referrals, and collaboration with partners to strengthen GBV prevention and response.',
     icon: Shield,
     color: 'from-purple-500 to-pink-600',
-    image: 'https://d64gsuwffb70l.cloudfront.net/698470e793dd34d81ce542cb_1770287505032_a263e9ad.jpg',
+    image: '/images/official/photo_2024-12-27_12-19-08.jpg',
     objectives: [
-      'Prevent gender-based violence through awareness',
-      'Provide support services to GBV survivors',
-      'Create safe spaces for women and girls',
-      'Build community capacity for GBV response',
+      'Raise awareness to prevent gender-based violence',
+      'Promote safe and respectful community engagement',
+      'Strengthen referral pathways with service providers and partners',
+      'Support community capacity for protection and response',
     ],
     activities: [
-      { title: 'Awareness Campaigns', desc: 'Community-wide education on GBV prevention and response.' },
-      { title: 'Survivor Support', desc: 'Counseling, referrals, and case management for survivors.' },
-      { title: 'Safe Spaces', desc: 'Women and girls safe spaces for support and empowerment.' },
-      { title: 'Community Dialogue', desc: 'Engaging men and boys in GBV prevention.' },
+      { title: 'Community Awareness', desc: 'Education and dialogue on GBV prevention and safety.' },
+      { title: 'Referral Support', desc: 'Connecting individuals to appropriate services with partners.' },
+      { title: 'Safe Engagement', desc: 'Promoting dignity, confidentiality, and safeguarding practices.' },
+      { title: 'Capacity Building', desc: 'Training and tools to strengthen community response.' },
     ],
-    beneficiaries: 'Women, girls, and GBV survivors in refugee communities',
-    stats: { reached: '1,200+', supported: '300+', spaces: '8' },
+    beneficiaries: 'Women, girls, and vulnerable individuals in refugee and host communities.',
+    stats: { focus: 'Protection', approach: 'Awareness & referrals', model: 'Partner-led services' },
     gallery: [
-      'https://d64gsuwffb70l.cloudfront.net/698470e793dd34d81ce542cb_1770287505032_a263e9ad.jpg',
-      'https://d64gsuwffb70l.cloudfront.net/698470e793dd34d81ce542cb_1770287524015_3ed19abb.jpg',
-      'https://d64gsuwffb70l.cloudfront.net/698470e793dd34d81ce542cb_1770287526096_911c3873.jpg',
+      '/images/official/photo_2024-12-27_12-19-08.jpg',
+      '/images/official/photo_2024-12-27_12-19-17.jpg',
+      '/images/official/photo_2026-02-07_22-18-48.jpg',
     ],
   },
   'mhpss': {
-    title: 'Psychosocial Support & Mental Health (MHPSS)',
-    subtitle: 'Healing and Hope',
-    description: 'The MHPSS program provides mental health services and community-based psychosocial support to help refugees heal from trauma and build resilience. In partnership with DRC, we offer comprehensive mental health care.',
+    title: 'Psychosocial Support and Mental Health (MHPSS)',
+    subtitle: 'Wellbeing and Support',
+    description:
+      'The MHPSS program strengthens wellbeing through community-based psychosocial support and social cohesion activities, including child-friendly sessions through play, in partnership with service providers.',
     icon: Heart,
     color: 'from-rose-500 to-red-600',
-    image: 'https://d64gsuwffb70l.cloudfront.net/698470e793dd34d81ce542cb_1770287509277_ccf1658b.jpg',
+    image: '/images/official/photo_2026-02-07_22-29-33-new.jpg',
     objectives: [
-      'Provide accessible mental health services',
-      'Build community-based support networks',
-      'Train peer counselors and support workers',
-      'Reduce stigma around mental health',
+      'Provide community-based psychosocial support',
+      'Strengthen resilience and social cohesion',
+      'Support children through psychosocial activities and play',
+      'Link individuals to services with partners where needed',
     ],
     activities: [
-      { title: 'Individual Counseling', desc: 'One-on-one sessions with trained counselors.' },
-      { title: 'Group Therapy', desc: 'Support groups for shared healing experiences.' },
-      { title: 'Peer Support', desc: 'Training community members as peer supporters.' },
-      { title: 'Trauma Healing', desc: 'Specialized workshops for trauma recovery.' },
+      { title: 'Group Sessions', desc: 'Facilitated psychosocial support sessions in community settings.' },
+      { title: 'Social Cohesion Activities', desc: 'Activities that strengthen unity across communities.' },
+      { title: 'Child-Friendly Support', desc: 'Psychosocial sessions for children through play.' },
+      { title: 'Partner Coordination', desc: 'Coordination with partners for specialized support and assistance.' },
     ],
-    beneficiaries: 'Refugees experiencing mental health challenges or trauma',
-    stats: { supported: '600+', counselors: '30', groups: '20' },
+    beneficiaries: 'Refugees and host community members in need of psychosocial support.',
+    stats: { focus: 'Wellbeing', approach: 'Community sessions', model: 'With partners' },
     gallery: [
-      'https://d64gsuwffb70l.cloudfront.net/698470e793dd34d81ce542cb_1770287509277_ccf1658b.jpg',
-      'https://d64gsuwffb70l.cloudfront.net/698470e793dd34d81ce542cb_1770287570278_b23d1ebd.jpg',
-      'https://d64gsuwffb70l.cloudfront.net/698470e793dd34d81ce542cb_1770287572746_e5472e29.jpg',
+      '/images/official/photo_2026-02-07_22-29-33-new.jpg',
+      '/images/official/photo_2026-02-07_22-29-47-new.jpg',
+      '/images/official/photo_2026-02-07_22-37-09-new.jpg',
     ],
   },
   'child-youth': {
-    title: 'Child & Youth Program',
-    subtitle: 'Investing in the Future',
-    description: 'Our Child & Youth Program supports the education and development of refugee children and youth through comprehensive programs that address educational, social, and recreational needs.',
+    title: 'Child and Youth Program',
+    subtitle: 'Education and Retention',
+    description:
+      "This program supports refugee children and youth through education assistance and community engagement to reduce dropout and strengthen learning, including language support and back-to-school initiatives.",
     icon: BookOpen,
     color: 'from-amber-500 to-orange-600',
-    image: 'https://d64gsuwffb70l.cloudfront.net/698470e793dd34d81ce542cb_1770287505751_03bf4158.jpg',
+    image: '/images/official/photo_2024-11-28_13-05-40.jpg',
     objectives: [
-      'Ensure access to quality education',
-      'Provide educational materials and support',
-      'Develop youth leadership skills',
-      'Create safe recreational spaces',
+      'Support access to education for refugee children',
+      'Reduce school dropout rates',
+      'Provide practical learning support, including language assistance',
+      'Engage parents and communities to support attendance and retention',
     ],
     activities: [
-      { title: 'Education Support', desc: 'School supplies, uniforms, and fee assistance.' },
-      { title: 'Tutoring Programs', desc: 'After-school academic support and homework help.' },
-      { title: 'Youth Leadership', desc: 'Training young people as community leaders.' },
-      { title: 'Recreation', desc: 'Sports, arts, and cultural activities for youth.' },
+      { title: 'Back-to-School Support', desc: 'School bags and essential supplies to encourage enrollment.' },
+      { title: 'Language Support', desc: 'Support such as Amharic learning assistance for school integration.' },
+      { title: 'Parent Engagement', desc: 'Joint committees and community engagement to address barriers.' },
+      { title: 'Teacher Support', desc: 'Working with schools and educators to support refugee learners.' },
     ],
-    beneficiaries: 'Refugee children (5-17) and youth (18-24)',
-    stats: { children: '1,500+', schools: '12', leaders: '100+' },
+    beneficiaries: 'Refugee children and youth, and the families and schools that support them.',
+    stats: { focus: 'Education', approach: 'Community support', model: 'School partnership' },
     gallery: [
-      'https://d64gsuwffb70l.cloudfront.net/698470e793dd34d81ce542cb_1770287529903_7b6cea9a.png',
-      'https://d64gsuwffb70l.cloudfront.net/698470e793dd34d81ce542cb_1770287524015_3ed19abb.jpg',
-      'https://d64gsuwffb70l.cloudfront.net/698470e793dd34d81ce542cb_1770287526296_503a9063.jpg',
+      '/images/official/photo_2024-11-28_13-05-40.jpg',
+      '/images/official/photo_2024-11-28_13-05-39.jpg',
+      '/images/official/photo_2024-11-28_13-05-01.jpg',
     ],
   },
   'happy-family': {
     title: 'Happy Family Program',
-    subtitle: 'Strengthening Family Bonds',
-    description: 'The Happy Family Program focuses on strengthening family bonds and promoting healthy family dynamics through education, counseling, and support services that help families thrive together.',
+    subtitle: 'Family Wellbeing',
+    description:
+      'The Happy Family Program strengthens family wellbeing through awareness, psychosocial support, and community connections that promote healthy family dynamics.',
     icon: Home,
     color: 'from-cyan-500 to-blue-600',
-    image: 'https://d64gsuwffb70l.cloudfront.net/698470e793dd34d81ce542cb_1770287506336_e4309f12.jpg',
+    image: '/images/official/photo_2024-11-28_13-05-42.jpg',
     objectives: [
-      'Strengthen family relationships',
-      'Provide parenting skills education',
-      'Offer family counseling services',
-      'Promote positive family dynamics',
+      'Strengthen family relationships and support systems',
+      'Promote positive communication and wellbeing',
+      'Encourage safe family environments',
+      'Connect families to services and support with partners where needed',
     ],
     activities: [
-      { title: 'Parenting Workshops', desc: 'Skills training for effective, positive parenting.' },
-      { title: 'Family Counseling', desc: 'Professional support for family challenges.' },
-      { title: 'Conflict Resolution', desc: 'Training in healthy communication and conflict resolution.' },
-      { title: 'Family Activities', desc: 'Bonding events and activities for families.' },
+      { title: 'Family Support Sessions', desc: 'Community-based sessions for wellbeing and family support.' },
+      { title: 'Parenting & Communication', desc: 'Awareness on positive parenting and communication.' },
+      { title: 'Referrals', desc: 'Connecting families to services and support with partners.' },
+      { title: 'Community Activities', desc: 'Activities that bring families together and strengthen cohesion.' },
     ],
-    beneficiaries: 'Refugee families seeking to strengthen their relationships',
-    stats: { families: '400+', workshops: '50+', events: '30' },
+    beneficiaries: 'Refugee and host community families.',
+    stats: { focus: 'Family wellbeing', approach: 'Community sessions', model: 'Support & referrals' },
     gallery: [
-      'https://d64gsuwffb70l.cloudfront.net/698470e793dd34d81ce542cb_1770287506336_e4309f12.jpg',
-      'https://d64gsuwffb70l.cloudfront.net/698470e793dd34d81ce542cb_1770287549968_1b361fc2.jpg',
-      'https://d64gsuwffb70l.cloudfront.net/698470e793dd34d81ce542cb_1770287572721_85927ff1.jpg',
+      '/images/official/photo_2024-11-28_13-05-42.jpg',
+      '/images/official/photo_2026-02-07_21-33-53.jpg',
+      '/images/official/photo_2026-02-07_22-18-48.jpg',
+    ],
+  },
+  'disability-support': {
+    title: 'Disability Support Program',
+    subtitle: 'Inclusion and Accessibility',
+    description:
+      'This program promotes inclusion and access to support for persons with disabilities within refugee and host communities, through awareness, referrals, and community-led support.',
+    icon: Accessibility,
+    color: 'from-teal-500 to-emerald-600',
+    image: '/images/official/photo_2026-02-07_21-33-53.jpg',
+    objectives: [
+      'Promote inclusion and equitable access to opportunities',
+      'Raise awareness about accessibility and rights',
+      'Strengthen community support networks',
+      'Link individuals to services and support with partners',
+    ],
+    activities: [
+      { title: 'Inclusion Awareness', desc: 'Community awareness and learning on disability inclusion.' },
+      { title: 'Accessibility Support', desc: 'Identifying barriers and supporting practical improvements where possible.' },
+      { title: 'Peer Networks', desc: 'Community-led peer support and connections.' },
+      { title: 'Referrals', desc: 'Linkage to specialized services and partners when available.' },
+    ],
+    beneficiaries: 'Persons with disabilities in refugee and host communities and their families.',
+    stats: { focus: 'Inclusion', approach: 'Awareness & support', model: 'Community-led' },
+    gallery: [
+      '/images/official/photo_2026-02-07_21-33-53.jpg',
+      '/images/official/photo_2024-11-28_13-05-23.jpg',
+      '/images/official/photo_2024-11-28_13-05-39.jpg',
     ],
   },
 };
 
-const ProgramDetailPage: React.FC<ProgramDetailPageProps> = ({ programId, setCurrentPage }) => {
-  const program = programData[programId];
+const ProgramDetailPage: React.FC = () => {
+  const navigate = useNavigate();
+  const { programId } = useParams();
+  const program = programId ? programData[programId] : undefined;
 
   if (!program) {
     return (
-      <div className="min-h-screen pt-32 text-center">
+      <article className="min-h-screen pt-32 text-center">
+        <Seo
+          title="Program Not Found"
+          description="The program you are looking for does not exist or may have been moved."
+          noIndex
+        />
+        <StructuredData
+          breadcrumbs={[
+            { name: 'Home', path: '/' },
+            { name: 'Programs', path: '/programs' },
+            { name: 'Not Found', path: programId ? `/programs/${programId}` : '/programs' },
+          ]}
+        />
         <h1 className="text-2xl font-bold text-gray-600">Program not found</h1>
         <button
-          onClick={() => setCurrentPage('programs')}
+          onClick={() => navigate('/programs')}
           className="mt-4 text-[#2C5F6F] hover:text-[#D4A574]"
         >
           Back to Programs
         </button>
-      </div>
+      </article>
     );
   }
 
   const Icon = program.icon;
 
   return (
-    <div className="min-h-screen pt-20">
+    <article className="min-h-screen pt-20">
+      <Seo
+        title={program.title}
+        description={program.description}
+        image={program.image}
+        imageAlt={program.title}
+        ogType="article"
+      />
+      <StructuredData
+        breadcrumbs={[
+          { name: 'Home', path: '/' },
+          { name: 'Programs', path: '/programs' },
+          { name: program.title, path: programId ? `/programs/${programId}` : '/programs' },
+        ]}
+      />
       {/* Hero Section */}
-      <section className="relative py-20">
-        <div
-          className="absolute inset-0 bg-cover bg-center"
-          style={{ backgroundImage: `url('${program.image}')` }}
-        >
-          <div className={`absolute inset-0 bg-gradient-to-r ${program.color} opacity-90`}></div>
+      <section className="relative -mt-20 overflow-hidden">
+        <div aria-hidden className="absolute inset-0">
+          <OptimizedImage
+            src={program.image}
+            alt=""
+            className="absolute inset-0 h-full w-full object-cover"
+            loading="eager"
+            fetchPriority="high"
+            sizes="100vw"
+          />
+          <div className={`absolute inset-0 bg-gradient-to-r ${program.color} opacity-75`} />
+          <div className="absolute inset-0 bg-gradient-to-b from-black/5 via-transparent to-teal-950/55" />
         </div>
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <button
-            onClick={() => setCurrentPage('programs')}
-            className="inline-flex items-center text-white/80 hover:text-white mb-6 transition-colors"
-          >
-            <ArrowLeft className="w-5 h-5 mr-2" />
-            Back to Programs
-          </button>
-          <div className="flex items-center mb-4">
-            <div className="w-16 h-16 bg-white/20 rounded-xl flex items-center justify-center mr-4">
-              <Icon className="w-8 h-8 text-white" />
+
+        <div aria-hidden className="absolute inset-0">
+          <div className="absolute -top-40 -right-40 h-[32rem] w-[32rem] rounded-full bg-secondary/25 blur-3xl" />
+          <div className="absolute -bottom-48 -left-48 h-[34rem] w-[34rem] rounded-full bg-primary/20 blur-3xl" />
+        </div>
+
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-24 pb-14 sm:pt-28 sm:pb-20 lg:pt-36 lg:pb-28">
+          <div className="max-w-3xl">
+            <div className="rounded-3xl bg-white/10 supports-[backdrop-filter]:bg-white/5 backdrop-blur-xl border border-white/20 shadow-[0_20px_60px_rgba(0,0,0,0.28)] p-6 sm:p-9">
+              <button
+                type="button"
+                onClick={() => navigate('/programs')}
+                className="inline-flex items-center text-white/90 hover:text-white mb-6 transition-colors"
+              >
+                <ArrowLeft className="w-5 h-5 mr-2" />
+                Back to Programs
+              </button>
+              <div className="flex items-center mb-4">
+                <div className="w-16 h-16 bg-white/15 rounded-2xl ring-1 ring-white/20 flex items-center justify-center mr-4">
+                  <Icon className="w-8 h-8 text-white" />
+                </div>
+                <span className="text-white/80 font-medium">{program.subtitle}</span>
+              </div>
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-5 sm:mb-6">{program.title}</h1>
+              <p className="text-white/90 text-lg md:text-xl leading-relaxed">{program.description}</p>
             </div>
-            <span className="text-white/80 font-medium">{program.subtitle}</span>
           </div>
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-6">
-            {program.title}
-          </h1>
-          <p className="text-white/90 text-xl max-w-3xl leading-relaxed">
-            {program.description}
-          </p>
         </div>
       </section>
 
@@ -315,10 +389,12 @@ const ProgramDetailPage: React.FC<ProgramDetailPageProps> = ({ programId, setCur
           <div className="grid md:grid-cols-3 gap-6">
             {program.gallery.map((img: string, idx: number) => (
               <div key={idx} className="rounded-xl overflow-hidden shadow-lg">
-                <img
+                <OptimizedImage
                   src={img}
                   alt={`${program.title} ${idx + 1}`}
                   className="w-full h-64 object-cover hover:scale-105 transition-transform duration-500"
+                  loading="lazy"
+                  sizes="(max-width: 768px) 100vw, 33vw"
                 />
               </div>
             ))}
@@ -337,13 +413,13 @@ const ProgramDetailPage: React.FC<ProgramDetailPageProps> = ({ programId, setCur
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button
-              onClick={() => setCurrentPage('contact')}
+              onClick={() => navigate('/donate')}
               className="px-8 py-4 bg-white text-[#2C5F6F] rounded-full font-semibold hover:shadow-xl transition-all"
             >
               Donate Now
             </button>
             <button
-              onClick={() => setCurrentPage('partnerships')}
+              onClick={() => navigate('/partnerships')}
               className="px-8 py-4 bg-transparent border-2 border-white text-white rounded-full font-semibold hover:bg-white/10 transition-all"
             >
               Partner With Us
@@ -351,7 +427,7 @@ const ProgramDetailPage: React.FC<ProgramDetailPageProps> = ({ programId, setCur
           </div>
         </div>
       </section>
-    </div>
+    </article>
   );
 };
 

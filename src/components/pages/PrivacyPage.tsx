@@ -1,30 +1,33 @@
 import React from 'react';
 import { Database, Lock, Mail, Shield, Users } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+import Seo from '@/components/Seo';
+import StructuredData from '@/components/StructuredData';
+import PageHero from '@/components/PageHero';
 
-interface PrivacyPageProps {
-  setCurrentPage: (page: string) => void;
-}
-
-const PrivacyPage: React.FC<PrivacyPageProps> = ({ setCurrentPage }) => {
+const PrivacyPage: React.FC = () => {
+  const navigate = useNavigate();
   return (
-    <div className="min-h-screen pt-20">
+    <article className="min-h-screen pt-20">
+      <Seo
+        title="Privacy Policy"
+        description="Read the EFFR privacy policy describing how we collect, use, and protect your information."
+      />
+      <StructuredData
+        breadcrumbs={[
+          { name: 'Home', path: '/' },
+          { name: 'Privacy Policy', path: '/privacy' },
+        ]}
+      />
       {/* Hero */}
-      <section className="relative py-20 bg-gradient-to-br from-primary to-teal-700">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="max-w-3xl">
-            <span className="text-secondary font-semibold text-sm uppercase tracking-wider">Legal</span>
-            <h1 className="text-4xl md:text-5xl font-bold text-white mt-2 mb-6">
-              Privacy Policy
-            </h1>
-            <p className="text-white/90 text-xl leading-relaxed">
-              We respect your privacy and are committed to protecting your personal information.
-            </p>
-            <p className="text-white/70 text-sm mt-4">
-              Last updated: February 5, 2026
-            </p>
-          </div>
-        </div>
-      </section>
+      <PageHero
+        imageSrc="/images/official/photo_2024-11-28_13-05-39.jpg"
+        badge={{ label: 'Legal' }}
+        title="Privacy Policy"
+        description="We respect your privacy and are committed to protecting your personal information."
+      >
+        <p className="text-white/70 text-sm">Last updated: February 5, 2026</p>
+      </PageHero>
 
       {/* Content */}
       <section className="py-16">
@@ -96,25 +99,25 @@ const PrivacyPage: React.FC<PrivacyPageProps> = ({ setCurrentPage }) => {
                 </a>
                 .
               </p>
-              <div className="mt-5 flex flex-col sm:flex-row gap-3">
-                <button
-                  onClick={() => setCurrentPage('contact')}
-                  className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 text-white font-semibold hover:bg-teal-700 transition-colors"
-                >
-                  Go to Contact Form
-                </button>
-                <button
-                  onClick={() => setCurrentPage('home')}
-                  className="inline-flex items-center justify-center rounded-full border-2 border-primary px-6 py-3 text-primary font-semibold hover:bg-primary hover:text-white transition-colors"
-                >
-                  Back to Home
-                </button>
+                <div className="mt-5 flex flex-col sm:flex-row gap-3">
+                  <button
+                    onClick={() => navigate('/contact')}
+                    className="inline-flex items-center justify-center rounded-full bg-primary px-6 py-3 text-white font-semibold hover:bg-teal-700 transition-colors"
+                  >
+                    Go to Contact Form
+                  </button>
+                  <button
+                    onClick={() => navigate('/')}
+                    className="inline-flex items-center justify-center rounded-full border-2 border-primary px-6 py-3 text-primary font-semibold hover:bg-primary hover:text-white transition-colors"
+                  >
+                    Back to Home
+                  </button>
               </div>
             </div>
           </div>
         </div>
       </section>
-    </div>
+    </article>
   );
 };
 
